@@ -8,24 +8,24 @@
             <label>Title</label>
             <input type="text" tabindex="1" style="font-size: 132%;">
           </div>
-          <div class="mui-select mui-textfield" id="primary_location_selector">
+          <div class="mui-select mui-textfield">
             <label>Primary Location</label>
-            <select>
-              <option>Use Existing</option>
-              <option>Post Anew</option>
+            <select id="primaryLocationSelector" onchange={ primaryLocationSelectionChanged }>
+              <option value="existing">Use Existing</option>
+              <option value="anew">Post Anew</option>
             </select>
           </div>
-          <div class="mui-textfield" id="primary_main_body_input">
+          <div class="mui-textfield" id="primaryUrlInputDiv">
             <label>Existing Primary URL</label>
-            <input type="text" tabindex="2">
+            <input type="text" tabindex="2" id="primaryUrlInput">
           </div>
-          <div class="mui-textfield" id="primary_main_body_input">
+          <div class="mui-textfield" id="primaryMainBodyInputDiv" style="display: none;">
             <label>Main Body</label>
-            <textarea style="max-width: 100%; min-width: 100%;" tabindex="2"></textarea>
+            <textarea style="max-width: 100%; min-width: 100%; height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
           </div>
           <div class="mui-textfield">
             <label>Blurb</label>
-            <input type="text" tabindex="3">
+            <textarea style="max-width: 100%; min-width: 100%;" tabindex="3" id="blurbInput"></textarea>
           </div>
         </form>
       </div>
@@ -39,6 +39,16 @@
   </div>
   <script>
     var self = this;
-    this.name = "Post Creator!";
+    self.name = "Post Creator!";
+    self.primaryLocationSelectionChanged = function(evt) {
+      var selection = primaryLocationSelector.value;
+      if (selection == "existing") {
+        primaryUrlInputDiv.style.display = "block";
+        primaryMainBodyInputDiv.style.display = "none";
+      } else if (selection == "anew") {
+        primaryUrlInputDiv.style.display = "none";
+        primaryMainBodyInputDiv.style.display = "block";
+      }
+    }
   </script>
 </post-creator>
