@@ -1,0 +1,44 @@
+<post-creator>
+  <div class="mui-container">
+    <div class="mui-col-md-6">
+      <div class="mui-panel">
+        <form>
+          <legend>New Post</legend>
+          <div class="mui-textfield">
+            <label>Title</label>
+            <input type="text" tabindex="1" style="font-size: 132%;">
+          </div>
+          <div class="mui-select mui-textfield" id="primary_location_selector">
+            <label>Primary Location</label>
+            <select>
+              <option>Use Existing</option>
+              <option>Post Anew</option>
+            </select>
+          </div>
+          <div class="mui-textfield" id="primary_main_body_input">
+            <label>Existing Primary URL</label>
+            <input type="text" tabindex="2">
+          </div>
+          <div class="mui-textfield" id="primary_main_body_input">
+            <label>Main Body</label>
+            <textarea style="max-width: 100%; min-width: 100%;" tabindex="2"></textarea>
+          </div>
+          <div class="mui-textfield">
+            <label>Blurb</label>
+            <input type="text" tabindex="3">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="mui-col-md-5">
+      <div class="mui-panel">
+        <p>Moar stuff</p>
+      </div>
+      <button class="mui-btn mui-btn--primary" style="float: right;" >Button</button>
+    </div>
+  </div>
+  <script>
+    var self = this;
+    this.name = "Post Creator!";
+  </script>
+</post-creator>

@@ -1,13 +1,24 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>PostMaker</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/mui/dist/css/mui.min.css"/>
+  <script src="bower_components/mui/dist/js/mui.min.js"></script>
 </head>
 <body>
+  <header style="margin-bottom: 10px;">
+    <div class="mui-appbar mui--appbar-line-height">
+      <div class="mui-container-fluid">
+        <span class="mui--text-title">PostMaker</span>
+      </div>
+    </div>
+  </header>
+  <post-creator></post-creator>
   <script src="bower_components/riot/riot+compiler.min.js"></script>
-  <script src="components/test.html" type="riot/tag"></script>
+  <script src="tags/post-creator.html" type="riot/tag"></script>
   <script src="app.js"></script>
 </body>
 </html>
