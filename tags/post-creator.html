@@ -1,6 +1,6 @@
 <post-creator>
   <div class="mui-container">
-    <div class="mui-col-md-6">
+    <div class="mui-col-md-7 mui-col-lg-7">
       <div class="mui-panel">
         <form>
           <legend>New Post</legend>
@@ -10,16 +10,16 @@
           </div>
           <div class="mui-select mui-textfield">
             <label>Primary Location</label>
-            <select id="primaryLocationSelector" onchange={ primaryLocationSelectionChanged }>
+            <select id="primaryLocationSelector" onchange={ update }>
               <option value="existing">Use Existing</option>
               <option value="anew">Post Anew</option>
             </select>
           </div>
-          <div class="mui-textfield" id="primaryUrlInputDiv">
+          <div class="mui-textfield" style="display: { primaryLocationSelector.value == 'existing' ? 'block' : 'none' };">
             <label>Existing Primary URL</label>
             <input type="text" tabindex="2" id="primaryUrlInput">
           </div>
-          <div class="mui-textfield" id="primaryMainBodyInputDiv" style="display: none;">
+          <div class="mui-textfield" style="display: { primaryLocationSelector.value == 'anew' ? 'block' : 'none' };">
             <label>Main Body</label>
             <textarea style="max-width: 100%; min-width: 100%; height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
           </div>
@@ -40,15 +40,5 @@
   <script>
     var self = this;
     self.name = "Post Creator!";
-    self.primaryLocationSelectionChanged = function(evt) {
-      var selection = primaryLocationSelector.value;
-      if (selection == "existing") {
-        primaryUrlInputDiv.style.display = "block";
-        primaryMainBodyInputDiv.style.display = "none";
-      } else if (selection == "anew") {
-        primaryUrlInputDiv.style.display = "none";
-        primaryMainBodyInputDiv.style.display = "block";
-      }
-    }
   </script>
 </post-creator>
