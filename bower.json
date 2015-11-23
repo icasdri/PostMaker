@@ -2,7 +2,8 @@
   "name": "postmaker",
   "description": "Simple post orchestration tool written using web technologies.",
   "version": "0.0.1",
-  "private": true,
+  "license": "AGPL3+",
+  "private": false,
   "dependencies": {
     "riot": "~2.3.1",
     "mui": "~0.2.1"
