@@ -1,0 +1,49 @@
+<pm-progressbar>
+  <!--
+  Copyright 2015 icasdri
+
+  This file is part of PostMaker.
+
+  PostMaker is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  PostMaker is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+  <div class="pm-progressbar-container">
+    <div class="pm-progressbar" style="width: { val }%; background-color: { barColor };"></div>
+  </div>
+  <style scoped>
+    .pm-progressbar-container {
+      padding: 3.4px;
+      background: rgba(0, 0, 0, 0.003);
+      border-radius: 2px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .pm-progressbar {
+      height: 20px;
+      border-radius: 2px;
+    	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      transition: 0.4s linear;
+      transition-property: width, background-color;
+    }
+  </style>
+  <script>
+    var self = this;
+    self.val = 32;
+    self.barColor = "#2196f3";
+    self.parent.on("progress_changed", function(newValue, newColor) {
+      self.val = newValue;
+      if (newColor) {
+        self.barColor = newColor;
+      }
+    });
+  </script>
+</pm-progressbar>
