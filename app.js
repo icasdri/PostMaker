@@ -16,4 +16,17 @@ You should have received a copy of the GNU Affero General Public License
 along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-riot.mount("post-creator");
+riot.route("/", function() {
+  console.log("Redirecting to /create");
+  riot.route("/create");
+});
+
+riot.route("/create", function() {
+  riot.mount("pm-view", "post-creator");
+});
+
+riot.route("/configure", function() {
+  riot.mount("pm-view", "configuration-manager")
+});
+
+riot.route.start(true);

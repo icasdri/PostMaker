@@ -58,5 +58,8 @@
   <script>
     var self = this;
     self.name = "Post Creator!";
+    self.on("unmount", function() {
+      console.log("post-creator is getting unmounted.")
+    })
   </script>
 </post-creator>
