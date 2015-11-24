@@ -27,16 +27,11 @@ along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   <script src="bower_components/mui/dist/js/mui.min.js"></script>
 </head>
 <body>
-  <header style="margin-bottom: 10px;">
-    <div class="mui-appbar mui--appbar-line-height">
-      <div class="mui-container-fluid">
-        <span class="mui--text-title">PostMaker</span>
-      </div>
-    </div>
-  </header>
+  <header riot-tag="pm-appbar" class="mui-appbar mui--appbar-line-height" style="margin-bottom: 10px;"></header>
   <pm-view></pm-view>
   <script src="bower_components/riot/riot+compiler.min.js"></script>
   <script src="tags/pm-progressbar.html" type="riot/tag"></script>
+  <script src="tags/pm-appbar.html" type="riot/tag"></script>
   <script src="tags/post-creator.html" type="riot/tag"></script>
   <script src="tags/configuration-manager.html" type="riot/tag"></script>
   <script src="app.js"></script>
