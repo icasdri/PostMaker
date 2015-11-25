@@ -1,0 +1,63 @@
+<pm-collapsible>
+  <div class={ opts.divclass } id="collapsible_container" style="height: { containerHeight }px">
+    <div id="collapsible_content" style="opacity: { contentOpacity }">
+      <yield/>
+    </div>
+  </div>
+  <style scoped>
+    #collapsible_container {
+      transition: height 0.2s ease-in;
+      /*background-color: #AAA;*/
+    }
+    #collapsible_content {
+      transition: opacity 0.2s ease-in;
+    }
+  </style>
+  <script>
+    var self = this;
+    self.expanded = null;
+
+    var doCollapse = function() {
+      console.log("doCollapse() called");
+      self.expanded = false;
+      self.containerHeight = 0;
+      self.contentOpacity = 0;
+      self.update();
+    }
+    var doExpand = function() {
+      console.log("doReveal() called");
+      self.expanded = true;
+      self.containerHeight = opts.height;
+      self.contentOpacity = 100;
+      self.update();
+    }
+
+    self.on("updated", function() {
+      console.log("pm-collapsible was updated.");
+      console.log("I am " + self.expanded + " -- I need to be " + opts.expanded);
+      if((self.expanded == true || self.expanded == null) && opts.expanded == false) {
+        console.log("collapsing from update hook")
+        doCollapse();
+      } else if ((self.expanded == false || self.expanded == null) && opts.expanded == true) {
+        console.log("expanding from update hook")
+        doExpand();
+      }
+    });
+
+    self.update();
+
+    // self.parent.on("toggle_collapse", function(val) {
+    //   if (val == null) {
+    //     if (self.collapsed) {
+    //       doReveal();
+    //     } else {
+    //       doCollapse();
+    //     }
+    //   } else if (val == true) {
+    //     doCollapse();
+    //   } else if (val == false) {
+    //     doReveal();
+    //   }
+    // });
+  </script>
+</pm-collapsible>
