@@ -1,5 +1,5 @@
 <pm-collapsible>
-  <div class={ opts.outerclass } id="collapsible_container" style="height: { containerHeight }px; { depStyle }">
+  <div class={ opts.outerclass } id="collapsible_container" style="height: { containerHeight }; { depStyle }">
     <div class={ opts.innerclass } id="collapsible_content" style="opacity: { contentOpacity }">
       <yield/>
     </div>
@@ -17,47 +17,76 @@
     var self = this;
     self.expanded = null;
 
-    var doCollapse = function() {
+    var _px = function(s) {
+      return s + "px";
+    }
+
+    var calcContainerHeight = function() {
+      var contentHeight = self.collapsible_content.offsetHeight;
+      if (opts.height != null) {
+        return opts.height;
+      } else if (opts.vpadding != null) {
+        return contentHeight + parseInt(opts.vpadding);
+      } else {
+        return contentHeight;
+      }
+    }
+
+    var doCollapse = function(isInitialRun) {
       console.log("doCollapse() called");
       self.expanded = false;
-      self.containerHeight = 0;
-      self.contentOpacity = 0;
+      self.containerHeight = _px(calcContainerHeight());
+      self.update();
+      var deferredOperations = function(isInitialRun) {
+        self.containerHeight = _px(0);
+        self.contentOpacity = 0;
+        var styleInjectionOperation = function() {
+          self.depStyle = "padding: 0px;";
+          self.update();
+        }
+        self.update();
+        if (isInitialRun) {
+          styleInjectionOperation();
+        } else {
+          setTimeout(styleInjectionOperation, 200);
+        }
+      }
+      if (isInitialRun) {
+        deferredOperations(isInitialRun);
+      } else {
+        setTimeout(deferredOperations, 10);
+      }
+    }
+    var doExpand = function(isInitialRun) {
+      console.log("doReveal() called");
+      self.expanded = true;
+      self.depStyle = "";
+      self.contentOpacity = 100;
+      self.containerHeight = _px(calcContainerHeight());
       setTimeout(function() {
-        self.depStyle = "padding: 0px;";
+        self.containerHeight = "auto";
         self.update();
       }, 200);
       self.update();
     }
-    var doExpand = function() {
-      console.log("doReveal() called");
-      self.expanded = true;
-      self.depStyle = "";
-      var contentHeight = self.collapsible_content.offsetHeight;
-      if (opts.height != null) {
-        self.containerHeight = opts.height;
-      } else if (opts.vpadding != null) {
-        self.containerHeight = contentHeight + parseInt(opts.vpadding);
-      } else {
-        self.containerHeight = contentHeight;
-      }
-      self.contentOpacity = 100;
-      self.update();
-    }
 
-    self.on("updated", function() {
-      console.log("pm-collapsible was updated.");
-      console.log("I am " + self.expanded + " -- I need to be " + opts.expanded);
+    var doUpdate = function(isInitialRun) {
       if((self.expanded == true || self.expanded == null) && opts.expanded == false) {
         console.log("collapsing from update hook")
-        doCollapse();
+        doCollapse(isInitialRun);
       } else if ((self.expanded == false || self.expanded == null) && opts.expanded == true) {
         console.log("expanding from update hook")
-        doExpand();
+        doExpand(isInitialRun);
       }
+    }
+
+    doUpdate(true)
+
+    self.on("updated", function() {
+      doUpdate(false);
     });
 
     self.on("mount", function() {
-      self.update();
     });
 
     // self.parent.on("toggle_collapse", function(val) {
