@@ -37,10 +37,10 @@
             <label>Existing Primary URL</label>
             <input type="text" tabindex="2" id="primaryUrlInput">
           </div>
-          <div class="mui-textfield" show={ primaryLocationSelector.value == 'anew' }>
+          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ primaryLocationSelector.value == 'anew' }>
             <label>Main Body</label>
             <textarea style="max-width: 100%; min-width: 100%; height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
-          </div>
+          </pm-collapsible>
           <div class="mui-textfield">
             <label>Blurb</label>
             <textarea style="max-width: 100%; min-width: 100%;" tabindex="3" id="blurbInput"></textarea>
