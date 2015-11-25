@@ -57,6 +57,7 @@
         setTimeout(deferredOperations, 10);
       }
     }
+
     var doExpand = function(isInitialRun) {
       console.log("doReveal() called");
       self.expanded = true;
@@ -85,22 +86,5 @@
     self.on("updated", function() {
       doUpdate(false);
     });
-
-    self.on("mount", function() {
-    });
-
-    // self.parent.on("toggle_collapse", function(val) {
-    //   if (val == null) {
-    //     if (self.collapsed) {
-    //       doReveal();
-    //     } else {
-    //       doCollapse();
-    //     }
-    //   } else if (val == true) {
-    //     doCollapse();
-    //   } else if (val == false) {
-    //     doReveal();
-    //   }
-    // });
   </script>
 </pm-collapsible>
