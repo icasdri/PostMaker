@@ -1,6 +1,6 @@
 <pm-collapsible>
-  <div class={ opts.divclass } id="collapsible_container" style="height: { containerHeight }px; { depStyle }">
-    <div id="collapsible_content" style="opacity: { contentOpacity }">
+  <div class={ opts.outerclass } id="collapsible_container" style="height: { containerHeight }px; { depStyle }">
+    <div class={ opts.innerclass } id="collapsible_content" style="opacity: { contentOpacity }">
       <yield/>
     </div>
   </div>
