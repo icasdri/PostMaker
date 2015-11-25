@@ -1,16 +1,16 @@
 <pm-collapsible>
-  <div class={ opts.divclass } id="collapsible_container" style="height: { containerHeight }px">
+  <div class={ opts.divclass } id="collapsible_container" style="height: { containerHeight }px; { depStyle }">
     <div id="collapsible_content" style="opacity: { contentOpacity }">
       <yield/>
     </div>
   </div>
   <style scoped>
     #collapsible_container {
-      transition: height 0.2s ease-in;
+      transition: height 0.2s linear;
       /*background-color: #AAA;*/
     }
     #collapsible_content {
-      transition: opacity 0.2s ease-in;
+      transition: opacity 0.2s linear;
     }
   </style>
   <script>
@@ -22,12 +22,24 @@
       self.expanded = false;
       self.containerHeight = 0;
       self.contentOpacity = 0;
+      setTimeout(function() {
+        self.depStyle = "padding: 0px;";
+        self.update();
+      }, 200);
       self.update();
     }
     var doExpand = function() {
       console.log("doReveal() called");
       self.expanded = true;
-      self.containerHeight = opts.height;
+      self.depStyle = "";
+      var contentHeight = self.collapsible_content.offsetHeight;
+      if (opts.height != null) {
+        self.containerHeight = opts.height;
+      } else if (opts.vpadding != null) {
+        self.containerHeight = contentHeight + parseInt(opts.vpadding);
+      } else {
+        self.containerHeight = contentHeight;
+      }
       self.contentOpacity = 100;
       self.update();
     }
@@ -44,7 +56,9 @@
       }
     });
 
-    self.update();
+    self.on("mount", function() {
+      self.update();
+    });
 
     // self.parent.on("toggle_collapse", function(val) {
     //   if (val == null) {
