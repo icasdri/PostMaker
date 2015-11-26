@@ -33,11 +33,11 @@
     var self = this;
     self.expanded = null;
 
-    var _px = function(s) {
+    self._px = function(s) {
       return s + "px";
     }
 
-    var calcContainerHeight = function() {
+    self._calcContainerHeight = function() {
       var contentHeight = self.collapsible_content.offsetHeight;
       if (opts.height != null) {
         return opts.height;
@@ -48,13 +48,12 @@
       }
     }
 
-    var doCollapse = function(isInitialRun) {
-      console.log("doCollapse() called");
+    self.collapse = function(isInitialRun) {
       self.expanded = false;
-      self.containerHeight = _px(calcContainerHeight());
+      self.containerHeight = self._px(self._calcContainerHeight());
       self.update();
       var deferredOperations = function(isInitialRun) {
-        self.containerHeight = _px(0);
+        self.containerHeight = self._px(0);
         self.depStyle = "padding-top: 0px; padding-bottom: 0px;";
         self.update();
       }
@@ -65,11 +64,10 @@
       }
     }
 
-    var doExpand = function(isInitialRun) {
-      console.log("doReveal() called");
+    self.expand = function(isInitialRun) {
       self.expanded = true;
       self.depStyle = "";
-      self.containerHeight = _px(calcContainerHeight());
+      self.containerHeight = self._px(self._calcContainerHeight());
       setTimeout(function() {
         self.containerHeight = "auto";
         self.update();
@@ -77,20 +75,18 @@
       self.update();
     }
 
-    var doUpdate = function(isInitialRun) {
+    self.expandCollapseIfNeeded = function(isInitialRun) {
       if((self.expanded == true || self.expanded == null) && opts.expanded == false) {
-        console.log("collapsing from update hook")
-        doCollapse(isInitialRun);
+        self.collapse(isInitialRun);
       } else if ((self.expanded == false || self.expanded == null) && opts.expanded == true) {
-        console.log("expanding from update hook")
-        doExpand(isInitialRun);
+        self.expand(isInitialRun);
       }
     }
 
-    doUpdate(true)
+    self.expandCollapseIfNeeded(true)
 
     self.on("updated", function() {
-      doUpdate(false);
+      self.expandCollapseIfNeeded(false);
     });
   </script>
 </pm-collapsible>
