@@ -18,7 +18,7 @@
   along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   -->
   <div class="pm-progressbar-container">
-    <div class="pm-progressbar" style="width: { val }%; background-color: { barColor };"></div>
+    <div class="pm-progressbar" style="width: { opts.value }%; background-color: { opts.barcolor };"></div>
   </div>
   <style scoped>
     .pm-progressbar-container {
@@ -35,15 +35,4 @@
       transition-property: width, background-color;
     }
   </style>
-  <script>
-    var self = this;
-    self.val = 32;
-    self.barColor = "#2196f3";
-    self.parent.on("progress_changed", function(newValue, newColor) {
-      self.val = newValue;
-      if (newColor) {
-        self.barColor = newColor;
-      }
-    });
-  </script>
 </pm-progressbar>
