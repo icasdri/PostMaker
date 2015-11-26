@@ -48,31 +48,36 @@
       }
     }
 
+    self._thenFinishCollapse = function() {
+      self.containerHeight = self._px(0);
+      self.depStyle = "padding-top: 0px; padding-bottom: 0px;";
+      self.update();
+    }
     self.collapse = function(isInitialRun) {
       self.expanded = false;
       self.containerHeight = self._px(self._calcContainerHeight());
-      self.update();
-      var deferredOperations = function(isInitialRun) {
-        self.containerHeight = self._px(0);
-        self.depStyle = "padding-top: 0px; padding-bottom: 0px;";
-        self.update();
-      }
       if (isInitialRun) {
-        deferredOperations(isInitialRun);
+        self._thenFinishCollapse(isInitialRun);
       } else {
-        setTimeout(deferredOperations, 10);
+        self.update();
+        setTimeout(self._thenFinishCollapse, 10);
       }
     }
 
+    self._thenFinishExpand = function() {
+      self.containerHeight = "auto";
+      self.update();
+    }
     self.expand = function(isInitialRun) {
       self.expanded = true;
       self.depStyle = "";
       self.containerHeight = self._px(self._calcContainerHeight());
-      setTimeout(function() {
-        self.containerHeight = "auto";
+      if (isInitialRun) {
+        self._thenFinishExpand()
+      } else {
         self.update();
-      }, 200);
-      self.update();
+        setTimeout(self._thenFinishExpand, 200);
+      }
     }
 
     self.expandCollapseIfNeeded = function(isInitialRun) {
