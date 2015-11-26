@@ -18,17 +18,15 @@
   along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   -->
   <div class={ opts.outerclass } id="collapsible_container" style="height: { containerHeight }; { depStyle }">
-    <div class={ opts.innerclass } id="collapsible_content" style="opacity: { contentOpacity }">
+    <div class={ opts.innerclass } id="collapsible_content">
       <yield/>
     </div>
   </div>
   <style scoped>
     #collapsible_container {
-      transition: height 0.2s linear;
+      transition: height 0.2s linear, padding-top 0.2s linear, padding-bottom 0.2s linear;
+      overflow: hidden;
       /*background-color: #AAA;*/
-    }
-    #collapsible_content {
-      transition: opacity 0.2s linear;
     }
   </style>
   <script>
@@ -57,17 +55,8 @@
       self.update();
       var deferredOperations = function(isInitialRun) {
         self.containerHeight = _px(0);
-        self.contentOpacity = 0;
-        var styleInjectionOperation = function() {
-          self.depStyle = "padding: 0px;";
-          self.update();
-        }
+        self.depStyle = "padding-top: 0px; padding-bottom: 0px;";
         self.update();
-        if (isInitialRun) {
-          styleInjectionOperation();
-        } else {
-          setTimeout(styleInjectionOperation, 200);
-        }
       }
       if (isInitialRun) {
         deferredOperations(isInitialRun);
@@ -80,7 +69,6 @@
       console.log("doReveal() called");
       self.expanded = true;
       self.depStyle = "";
-      self.contentOpacity = 100;
       self.containerHeight = _px(calcContainerHeight());
       setTimeout(function() {
         self.containerHeight = "auto";
