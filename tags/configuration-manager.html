@@ -18,8 +18,12 @@
   along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   -->
   <div class="mui-container">
-    <div class="mui-col-md-7 mui-col-lg-7">
+    <div class="mui-col-md-9 mui-col-lg-9">
       <div class="mui-panel">
+        <div class="mui-panel">
+          <h5>Subpanel. { remark }</h5>
+        </div>
+        <pubconf-container></pubconf-container>
         <h3>Confiuration Manager. { remark }</h3>
       </div>
     </div>
@@ -28,3 +32,42 @@
     this.remark = "Yay!";
   </script>
 </configuration-manager>
+
+<pubconf-container>
+  <div class="mui-panel" id="pubconf-header" onclick={ headerClicked }>
+    <h4>Pubconf Header</h4>
+  </div>
+  <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
+    <div class="mui-textfield">
+      <label>Test Field 1</label>
+      <input type="text">
+    </div>
+    <div class="mui-select mui-textfield">
+      <label>Test Field 2</label>
+      <select>
+        <option value="a">Option A</option>
+        <option value="b">Option B</option>
+      </select>
+    </div>
+    <h5>Pubconf content</h5>
+  </pm-collapsible>
+  <style scoped>
+    #pubconf-header {
+      margin-bottom: 0px;
+      cursor: pointer;
+      cursor: hand;
+    }
+    h4 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+  <script>
+    var self = this;
+    self.isExpanded = false;
+    self.headerClicked = function() {
+      console.log("Header clicked!");
+      self.isExpanded = !self.isExpanded;
+    }
+  </script>
+</pubconf-container>
