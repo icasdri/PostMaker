@@ -58,8 +58,9 @@
 </configuration-manager>
 
 <pubconf-container>
-  <div class="mui-panel" id="pubconf-header" onclick={ headerClicked }>
+  <div class="mui-panel" id="pubconf_header" onclick={ headerClicked }>
     <h4>Publisher A Configuration</h4>
+    <h5>Blah</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
     <div class="mui-textfield">
@@ -75,14 +76,18 @@
     </div>
   </pm-collapsible>
   <style scoped>
-    #pubconf-header {
+    #pubconf_header {
       margin-bottom: 0px;
       cursor: pointer;
       cursor: hand;
     }
-    h4 {
+    #pubconf_header * {
+      display: inline-block;
       margin-top: 0px;
       margin-bottom: 0px;
+    }
+    #pubconf_header h5 {
+      float: right;
     }
   </style>
   <script>
