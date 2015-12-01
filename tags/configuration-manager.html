@@ -18,13 +18,23 @@
   along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   -->
   <div class="mui-container">
-    <div class="mui-col-md-9 mui-col-lg-9">
-      <div class="mui-panel">
-        <div class="mui-panel">
-          <h5>Subpanel. { remark }</h5>
+    <div class="mui-col-md-4 mui-col-lg-4">
+      <h2>Configuration</h2>
+      <button class="mui-btn">Save to File</button>
+      <button class="mui-btn">Load from File</button>
+    </div>
+    <div class="mui-col-md-8 mui-col-lg-8">
+      <h3>Publishers</h3>
+      <pubconf-container></pubconf-container>
+      <div style="float: right; margin-top: -2px;">
+        <div class="mui-select mui-textfield" style="display: inline-block; min-width: 250px; margin-right: 5px;">
+          <select>
+            <!-- TODO: This needs to be populated from some global list of all availale publishers -->
+            <option value="pub_a">Publisher A</option>
+            <option value="pub_b">Publisher B</option>
+          </select>
         </div>
-        <pubconf-container></pubconf-container>
-        <h3>Confiuration Manager. { remark }</h3>
+        <button class="mui-btn mui-btn--primary mui-btn--fab" style="display: inline-block;">+</button>
       </div>
     </div>
   </div>
@@ -35,7 +45,7 @@
 
 <pubconf-container>
   <div class="mui-panel" id="pubconf-header" onclick={ headerClicked }>
-    <h4>Pubconf Header</h4>
+    <h4>Publisher A Configuration</h4>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
     <div class="mui-textfield">
@@ -49,7 +59,6 @@
         <option value="b">Option B</option>
       </select>
     </div>
-    <h5>Pubconf content</h5>
   </pm-collapsible>
   <style scoped>
     #pubconf-header {
