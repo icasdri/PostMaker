@@ -28,16 +28,16 @@
           </div>
           <div class="mui-select mui-textfield">
             <label>Primary Location</label>
-            <select id="primaryLocationSelector" onchange={ update }>
+            <select id="primaryLocationTypeSelector" onchange={ update }>
               <option value="existing">Use Existing</option>
               <option value="anew">Post Anew</option>
             </select>
           </div>
-          <div class="mui-textfield" show={ primaryLocationSelector.value == 'existing' }>
+          <div class="mui-textfield" show={ primaryLocationTypeSelector.value == 'existing' }>
             <label>Existing Primary URL</label>
             <input type="text" tabindex="2" id="primaryUrlInput">
           </div>
-          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ primaryLocationSelector.value == 'anew' }>
+          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ primaryLocationTypeSelector.value == 'anew' }>
             <label>Main Body</label>
             <textarea style="max-width: 100%; min-width: 100%; height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
           </pm-collapsible>
@@ -49,11 +49,22 @@
       </div>
     </div>
     <div class="mui-col-md-5">
-      <div class="mui-panel">
-        <p>Moar stuff</p>
+      <div class="mui-panel" id="destination_panel">
+        <h3>Post to</h3>
+        <div class="mui-select mui-textfield" id="primary_destination_div">
+          <label>Primary Location</label>
+          <!-- <h5>Primary Location</h5> -->
+          <select id="primaryLocationSelector">
+            <option value="prim_pub_x">Primary Publisher X</option>
+            <option value="prim_pub_y">Primiary Publisher Y</option>
+          </select>
+          <!-- <h5>Secondary Locations</h5> -->
+        </div>
+        <div class="mui-textfield">
+          <label>Secondary Locations</label>
+        </div>
+        <button class="mui-btn mui-btn--small mui-btn--fab" style="float: right;">+</button>
       </div>
-      <button class="mui-btn mui-btn--primary" style="float: right;" >Button</button>
-      <test-collapsible></test-collapsible>
     </div>
   </div>
   <script>
@@ -63,4 +74,12 @@
       console.log("post-creator is getting unmounted.")
     })
   </script>
+  <style scoped>
+    #destination_panel h3 {
+      margin-top: 0px;
+    }
+    /*#primary_destination_div {
+      padding-top: 0px;
+    }*/
+  </style>
 </post-creator>
