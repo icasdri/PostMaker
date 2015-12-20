@@ -29,9 +29,7 @@
       <div id="add_pub_action_div">
         <div id="add_pub_select_field" class="mui-select mui-textfield" >
           <select id="add_pub_select">
-            <!-- TODO: This needs to be populated from some global list of all availale publishers -->
-            <option value="pub_a">Publisher A</option>
-            <option value="pub_b">Publisher B</option>
+            <option each="{ k, v in AppConf.PUBLISHER_TYPES }" value={ k }>{ v.typeName }</option>
           </select>
         </div>
         <button id="add_pub_fab" class="mui-btn mui-btn--primary mui-btn--fab">+</button>
