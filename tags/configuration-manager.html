@@ -29,7 +29,7 @@
       <div id="add-pub-action-div">
         <div id="add-pub-select-field" class="mui-select mui-textfield" >
           <select id="add-pub-select">
-            <option each="{ k, v in AppConf.PUBLISHER_TYPES }" value={ k }>{ v.typeName }</option>
+            <option each={ k, v in AppConf.PUBLISHER_TYPES } value={ k }>{ v.typeName }</option>
           </select>
         </div>
         <button id="add-pub-fab" class="mui-btn mui-btn--primary mui-btn--fab" onclick={ addPublisherFabClicked }>+</button>
