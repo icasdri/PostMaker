@@ -1,6 +1,6 @@
 <pubconf-wordpress>
   <div class="mui-textfield">
-    <label>Test Field 1</label>
+    <label>WordPress PubConf</label>
     <input type="text">
   </div>
   <div class="mui-select mui-textfield">
@@ -16,3 +16,15 @@
     });
   </script>
 </pubconf-wordpress>
+
+<pubconf-facebook-group>
+  <div class="mui-textfield">
+    <label>Facebook Group PubConf</label>
+    <input type="text">
+  </div>
+  <script>
+    this.on("mount", function() {
+      console.log("pubconf-facebook-group is getting mounted");
+    });
+  </script>
+</pubconf-facebook-group>

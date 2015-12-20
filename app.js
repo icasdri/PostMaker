@@ -24,6 +24,13 @@ var AppConf = {
         url: "",
         categories: []
       })
+    },
+    "facebook-group": {
+      typeName: "Facebook Group",
+      configTemplate: JSON.stringify({
+        groupId: "",
+        apiKey: ""
+      })
     }
   }
 }
