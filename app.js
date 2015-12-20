@@ -43,15 +43,16 @@ var Store = {
   },
 
   addPublisher: function(publisherType) {
+    console.log("Adding publisher of type: " + publisherType);
     publisherTypeConf = AppConf.PUBLISHER_TYPES[publisherType];
-    publisherConfig = JSON.parse(publisherTypeConf.configTemplate);
-    if (configTemplate) {
+    if (publisherTypeConf) {
+      publisherConfig = JSON.parse(publisherTypeConf.configTemplate);
       var newId = parseInt(localStorage.getItem("publishers_idCount")) + 1;
       publisherConfig.publisherType = publisherType;
       publisherConfig.publisherId = newId;
       publisherConfig.publisherName = publisherTypeConf.typeName + " (" + newId + ")";
       this.publishers.push(publisherConfig)
-      localStorage.setItem("publishers", JSON.stringify(publishers));
+      localStorage.setItem("publishers", JSON.stringify(this.publishers));
       localStorage.setItem("publishers_idCount", newId.toString());
     } else {
       console.log("E: Attempted to add publisher with invalid publisher type: " + publisherType);
@@ -63,7 +64,7 @@ var Store = {
       var x = this.publishers[i];
       if (x.publisherId == publisherId) {
         this.publishers.splice(i);
-        localStorage.setItem("publishers", JSON.stringify(publishers));
+        localStorage.setItem("publishers", JSON.stringify(this.publishers));
         return publisherId;
       }
     }

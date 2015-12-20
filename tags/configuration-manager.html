@@ -32,11 +32,15 @@
             <option each="{ k, v in AppConf.PUBLISHER_TYPES }" value={ k }>{ v.typeName }</option>
           </select>
         </div>
-        <button id="add_pub_fab" class="mui-btn mui-btn--primary mui-btn--fab">+</button>
+        <button id="add_pub_fab" class="mui-btn mui-btn--primary mui-btn--fab" onclick={ addPublisherFabClicked }>+</button>
       </div>
     </div>
   </div>
   <script>
+    var self = this;
+    self.addPublisherFabClicked = function() {
+      Store.addPublisher(this["add_pub_select"].value);
+    }
     this.remark = "Yay!";
   </script>
   <style scoped>
