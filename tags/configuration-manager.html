@@ -26,41 +26,41 @@
     <div class="mui-col-md-8 mui-col-lg-8">
       <h3>Publishers { remark }</h3>
       <pubconf-container></pubconf-container>
-      <div id="add_pub_action_div">
-        <div id="add_pub_select_field" class="mui-select mui-textfield" >
-          <select id="add_pub_select">
+      <div id="add-pub-action-div">
+        <div id="add-pub-select-field" class="mui-select mui-textfield" >
+          <select id="add-pub-select">
             <option each="{ k, v in AppConf.PUBLISHER_TYPES }" value={ k }>{ v.typeName }</option>
           </select>
         </div>
-        <button id="add_pub_fab" class="mui-btn mui-btn--primary mui-btn--fab" onclick={ addPublisherFabClicked }>+</button>
+        <button id="add-pub-fab" class="mui-btn mui-btn--primary mui-btn--fab" onclick={ addPublisherFabClicked }>+</button>
       </div>
     </div>
   </div>
   <script>
     var self = this;
     self.addPublisherFabClicked = function() {
-      Store.addPublisher(this["add_pub_select"].value);
+      Store.addPublisher(this["add-pub-select"].value);
     }
     this.remark = "Yay!";
   </script>
   <style scoped>
-    #add_pub_action_div {
+    #add-pub-action-div {
       float: right;
       margin-top: -5px;
     }
-    #add_pub_select_field {
+    #add-pub-select-field {
       display: inline-block;
       min-width: 250px;
       margin-right: 5px;
     }
-    #add_pub_fab {
+    #add-pub-fab {
       display: inline-block;
     }
   </style>
 </configuration-manager>
 
 <pubconf-container>
-  <div class="mui-panel" id="pubconf_header" onclick={ headerClicked }>
+  <div class="mui-panel" id="pubconf-header" onclick={ headerClicked }>
     <h4>Publisher A Configuration</h4>
     <h5>Blah</h5>
   </div>
@@ -78,17 +78,17 @@
     </div>
   </pm-collapsible>
   <style scoped>
-    #pubconf_header {
+    #pubconf-header {
       margin-bottom: 0px;
       cursor: pointer;
       cursor: hand;
     }
-    #pubconf_header * {
+    #pubconf-header * {
       display: inline-block;
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    #pubconf_header h5 {
+    #pubconf-header h5 {
       float: right;
     }
   </style>
