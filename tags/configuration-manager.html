@@ -25,7 +25,7 @@
     </div>
     <div class="mui-col-md-8 mui-col-lg-8">
       <h3>Publishers { remark }</h3>
-      <pubconf-container></pubconf-container>
+      <container-pubconf each={ v in Store.publishers } pub={ v }></container-pubconf>
       <div id="add-pub-action-div">
         <div id="add-pub-select-field" class="mui-select mui-textfield" >
           <select id="add-pub-select">
@@ -59,45 +59,36 @@
   </style>
 </configuration-manager>
 
-<pubconf-container>
-  <div class="mui-panel" id="pubconf-header" onclick={ headerClicked }>
-    <h4>Publisher A Configuration</h4>
-    <h5>Blah</h5>
+<container-pubconf>
+  <div class="mui-panel" id="pc-header" onclick={ headerClicked }>
+    <h4>{ opts.pub.publisherName }</h4>
+    <h5 if={ opts.pub.allowedAsPrimary }>Primary Ok</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
-    <div class="mui-textfield">
-      <label>Test Field 1</label>
-      <input type="text">
-    </div>
-    <div class="mui-select mui-textfield">
-      <label>Test Field 2</label>
-      <select>
-        <option value="a">Option A</option>
-        <option value="b">Option B</option>
-      </select>
-    </div>
+    <div id="pubconf-mount-point"></div>
   </pm-collapsible>
-  <style scoped>
-    #pubconf-header {
-      margin-bottom: 0px;
-      cursor: pointer;
-      cursor: hand;
-    }
-    #pubconf-header * {
-      display: inline-block;
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-    #pubconf-header h5 {
-      float: right;
-    }
-  </style>
   <script>
     var self = this;
     self.isExpanded = false;
     self.headerClicked = function() {
-      console.log("Header clicked!");
       self.isExpanded = !self.isExpanded;
     }
+    var mountPoint = this.tags["pm-collapsible"]["pubconf-mount-point"]
+    riot.mount(mountPoint, "pubconf-" + opts.pub.publisherType, opts.pub);
   </script>
-</pubconf-container>
+  <style scoped>
+    #pc-header {
+      margin-bottom: 0px;
+      cursor: pointer;
+      cursor: hand;
+    }
+    #pc-header * {
+      display: inline-block;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    #pc-header h5 {
+      float: right;
+    }
+  </style>
+</container-pubconf>

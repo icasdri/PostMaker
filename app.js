@@ -51,6 +51,7 @@ var Store = {
       publisherConfig.publisherType = publisherType;
       publisherConfig.publisherId = newId;
       publisherConfig.publisherName = publisherTypeConf.typeName + " (" + newId + ")";
+      publisherConfig.allowedAsPrimary = false;
       this.publishers.push(publisherConfig)
       localStorage.setItem("publishers", JSON.stringify(this.publishers));
       localStorage.setItem("publishers_idCount", newId.toString());

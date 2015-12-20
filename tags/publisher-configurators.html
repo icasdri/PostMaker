@@ -1,0 +1,18 @@
+<pubconf-wordpress>
+  <div class="mui-textfield">
+    <label>Test Field 1</label>
+    <input type="text">
+  </div>
+  <div class="mui-select mui-textfield">
+    <label>Test Field 2</label>
+    <select>
+      <option value="a">Option A</option>
+      <option value="b">Option B</option>
+    </select>
+  </div>
+  <script>
+    this.on("mount", function() {
+      console.log("pubconf-wordpress is getting mounted");
+    });
+  </script>
+</pubconf-wordpress>
