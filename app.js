@@ -16,6 +16,66 @@ You should have received a copy of the GNU Affero General Public License
 along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var AppConf = {
+  PUBLISHER_TYPES: {
+    "wordpress": {
+      typeName: "WordPress",
+      configTemplate: JSON.stringify({
+        url: "",
+        categories: []
+      })
+    }
+  }
+}
+
+var Store = {
+  addPublisher: function(publisherType) {
+    publisherTypeConf = AppConf.PUBLISHER_TYPES[publisherType];
+    publisherConfig = JSON.parse(publisherTypeConf.configTemplate);
+    if (configTemplate) {
+      var pubListJson = localStorage.getItem("publishers");
+      if (pubListJson) {
+        var pubList = JSON.parse(pubListJson);
+      } else {
+        var pubList = [];
+      }
+      var newId = pubList.length;
+      publisherConfig.publisherType = publisherType;
+      publisherConfig.publisherId = newId;
+      publisherConfig.publisherName = publisherTypeConf.typeName + " - " + newId;
+      pub_list.push(newId);
+      localStorage.setItem("publishers", JSON.stringify(pubList));
+      localStorage.setItem("publisher:" + newId, JSON.stringify(publisherConfig));
+    } else {
+      console.log("E: Attempted to add publisher with invalid publisher type: " + publisherType);
+    }
+  },
+  removePublisher: function(publisherId) {
+    var pubListJson = localStorage.getItem("publishers");
+    if (pubListJson) {
+      var pubList = JSON.parse(pubListJson);
+      var index = pubList.indexOf(publisherId);
+      if (index >= 0) {
+        pubList.splice(index);
+        localStorage.removeItem("publisher:" + publisherId);
+        localStorage.setItem("publishers", JSON.stringify(pubList));
+      } else {
+        console.log("E: Attempted to remove publisher that does not exist: " + publisherId);
+      }
+    } else {
+      console.log("E: Attempted to remove publisher with uninitialized publisher storage.");
+    }
+  },
+  getPublisher: function(publisherId) {
+    return localStorage.getItem("publisher:" + publisherId);
+  },
+  getAllPublisherIds: function() {
+    return localStorage.getItem("publishers");
+  }
+};
+
+riot.observable(Store);
+
 riot.mount("pm-appbar");
 
 riot.route("/", function() {
