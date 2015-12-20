@@ -29,52 +29,51 @@ var AppConf = {
 }
 
 var Store = {
+  publishers = null,
+
+  init: function() {
+      var pubListJson = localStorage.getItem("publishers");
+      if (pubListJson) {
+        this.publishers = JSON.parse(pubListJson);
+      } else {
+        this.publishers = [];
+        localStorage.setItem("publishers", "[]");
+        localStorage.setItem("publishers_idCount", "0");
+      }
+  },
+
   addPublisher: function(publisherType) {
     publisherTypeConf = AppConf.PUBLISHER_TYPES[publisherType];
     publisherConfig = JSON.parse(publisherTypeConf.configTemplate);
     if (configTemplate) {
-      var pubListJson = localStorage.getItem("publishers");
-      if (pubListJson) {
-        var pubList = JSON.parse(pubListJson);
-      } else {
-        var pubList = [];
-      }
-      var newId = pubList.length;
+      var newId = parseInt(localStorage.getItem("publishers_idCount")) + 1;
       publisherConfig.publisherType = publisherType;
       publisherConfig.publisherId = newId;
-      publisherConfig.publisherName = publisherTypeConf.typeName + " - " + newId;
-      pub_list.push(newId);
-      localStorage.setItem("publishers", JSON.stringify(pubList));
-      localStorage.setItem("publisher:" + newId, JSON.stringify(publisherConfig));
+      publisherConfig.publisherName = publisherTypeConf.typeName + " (" + newId + ")";
+      this.publishers.push(publisherConfig)
+      localStorage.setItem("publishers", JSON.stringify(publishers));
+      localStorage.setItem("publishers_idCount", newId.toString());
     } else {
       console.log("E: Attempted to add publisher with invalid publisher type: " + publisherType);
     }
   },
+
   removePublisher: function(publisherId) {
-    var pubListJson = localStorage.getItem("publishers");
-    if (pubListJson) {
-      var pubList = JSON.parse(pubListJson);
-      var index = pubList.indexOf(publisherId);
-      if (index >= 0) {
-        pubList.splice(index);
-        localStorage.removeItem("publisher:" + publisherId);
-        localStorage.setItem("publishers", JSON.stringify(pubList));
-      } else {
-        console.log("E: Attempted to remove publisher that does not exist: " + publisherId);
+    for (var i=0; i < this.publishers.length; i++) {
+      var x = this.publishers[i];
+      if (x.publisherId == publisherId) {
+        this.publishers.splice(i);
+        localStorage.setItem("publishers", JSON.stringify(publishers));
+        return publisherId;
       }
-    } else {
-      console.log("E: Attempted to remove publisher with uninitialized publisher storage.");
     }
+    console.log("E: Attempted to remove publisher that does not exist: " + publisherId);
+    return null;
   },
-  getPublisher: function(publisherId) {
-    return localStorage.getItem("publisher:" + publisherId);
-  },
-  getAllPublisherIds: function() {
-    return localStorage.getItem("publishers");
-  }
 };
 
 riot.observable(Store);
+Store.init();
 
 riot.mount("pm-appbar");
 
