@@ -24,7 +24,7 @@
           <legend>New Post</legend>
           <div class="mui-textfield">
             <label>Title</label>
-            <input type="text" tabindex="1" style="font-size: 132%;">
+            <input type="text" tabindex="1" id="titleInput" style="font-size: 132%;">
           </div>
           <div class="mui-select mui-textfield">
             <label>Primary Location</label>
@@ -39,26 +39,24 @@
           </div>
           <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ primaryLocationTypeSelector.value == 'anew' }>
             <label>Main Body</label>
-            <textarea style="max-width: 100%; min-width: 100%; height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
+            <textarea style="height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
           </pm-collapsible>
           <div class="mui-textfield">
             <label>Blurb</label>
-            <textarea style="max-width: 100%; min-width: 100%;" tabindex="3" id="blurbInput"></textarea>
+            <textarea tabindex="3" id="blurbInput"></textarea>
           </div>
         </form>
       </div>
     </div>
     <div class="mui-col-md-5">
-      <div class="mui-panel" id="destination_panel">
+      <div class="mui-panel destination-panel">
         <h3>Post to</h3>
-        <div class="mui-select mui-textfield" id="primary_destination_div">
+        <div class="mui-select mui-textfield">
           <label>Primary Location</label>
-          <!-- <h5>Primary Location</h5> -->
           <select id="primaryLocationSelector">
             <option value="prim_pub_x">Primary Publisher X</option>
             <option value="prim_pub_y">Primiary Publisher Y</option>
           </select>
-          <!-- <h5>Secondary Locations</h5> -->
         </div>
         <div class="mui-textfield">
           <label>Secondary Locations</label>
@@ -76,11 +74,12 @@
     })
   </script>
   <style scoped>
-    #destination_panel h3 {
+    textarea {
+      max-width: 100%;
+      min-width: 100%;
+    }
+    .destination-panel h3 {
       margin-top: 0px;
     }
-    /*#primary_destination_div {
-      padding-top: 0px;
-    }*/
   </style>
 </post-creator>
