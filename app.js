@@ -29,7 +29,7 @@ var AppConf = {
 }
 
 var Store = {
-  publishers = null,
+  publishers: null,
 
   init: function() {
       var pubListJson = localStorage.getItem("publishers");
@@ -69,7 +69,7 @@ var Store = {
     }
     console.log("E: Attempted to remove publisher that does not exist: " + publisherId);
     return null;
-  },
+  }
 };
 
 riot.observable(Store);
