@@ -76,6 +76,7 @@
   <script>
     var self = this;
     self.name = "Post Creator!";
+
     self.on("mount", function() {
       console.log("post-creator is getting mounted.");
       self["title-entry"].value = Store.post.title;
@@ -85,9 +86,10 @@
         self["primary-url-input"].value = Store.post.primaryLocUrl;
       } else {
         self["primary-loc-type-selector"].value = "anew";
-        self["primary-main-body-input"].value = Store.post.fullText;
+        self.tags["pm-collapsible"]["primary-main-body-input"].value = Store.post.fullText;
       }
     });
+
     self.on("unmount", function() {
       console.log("post-creator is getting unmounted.");
       Store.post.title = self["title-entry"].value;
@@ -99,15 +101,17 @@
         Store.post.primaryLocUrl = self["primary-url-input"].value;
       } else if (val == "anew") {
         Store.post.primaryLocExisting = false;
-        Store.post.fullText = self["primary-main-body-input"].value;
+        Store.post.fullText = self.tags["pm-collapsible"]["primary-main-body-input"].value;
       } else {
         console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
       }
       Store.commitChangesInPost();
     });
+
     self.on("update", function() {
 
     });
+
     self.primaryLocTypeSelectionChanged = function() {
       var val = self["primary-loc-type-selector"].value;
       console.log("primary-loc-type-selector --> " + val);
@@ -120,16 +124,20 @@
       }
       self.update();
     }
+
     self.primaryOnlyFilter = function(x) {
       return x.allowedAsPrimary;
     }
+
     self.addSecLocClicked = function() {
 
     }
+
     self.clearAllButtonClicked = function() {
       Store.resetPost();
       self.trigger("mount");
     }
+    
     self.publishButtonClicked = function() {
       console.log("Publish Button Clicked!");
       console.log(self["sec-loc-select"].value);
