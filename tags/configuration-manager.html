@@ -62,7 +62,7 @@
 <container-pubconf>
   <div class="mui-panel" id="pc-header" onclick={ headerClicked }>
     <h4>{ opts.pub.publisherName }</h4>
-    <h5 if={ opts.pub.allowedAsPrimary }>&nbsp(✓P)</h5>
+    <h5 if={ opts.pub.allowedAsPrimary }>&nbsp;(✓P)</h5>
     <h5>{ AppConf.PUBLISHER_TYPES[opts.pub.publisherType].typeName }</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
