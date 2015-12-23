@@ -38,6 +38,9 @@ var App = {
 var Store = {
   publishers: null,
   post: null,
+  watchHash: {
+    secondaryLocs: {}
+  },
 
   init: function() {
       var pubListJson = localStorage.getItem("publishers");
@@ -55,6 +58,52 @@ var Store = {
       } else {
         this.resetPost();
       }
+
+      for (var i=0; i < this.post.secondaryLocs.length; i++) {
+        var d = this.post.secondaryLocs[i].publisherId;
+        this.watchHash.secondaryLocs[d] = true;
+      }
+  },
+
+  allowedAsPrimaryPublishers: function() {
+    return this.publishers.filter(function(x) {
+      return x.allowedAsPrimary;
+    });
+  },
+
+  availPublishersForSecondaryLoc: function() {
+    var self = this;
+    return self.publishers.filter(function(x) {
+      if (self.post.primaryLoc && x.publisherId == self.post.primaryLoc.publisherId) {
+        return false;
+      } else if (self.watchHash.secondaryLocs[x.publisherId]) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  },
+
+  addSecondaryLocToPost: function(publisherId) {
+    if (!this.watchHash.secondaryLocs[publisherId]) {
+      var publisher = this.findPublisher(publisherId);
+      this.post.secondaryLocs.push(publisher);
+      this.watchHash.secondaryLocs[publisherId] = true;
+      this.commitChangesInPost();
+    }
+  },
+
+  removeSecondaryLocFromPost: function(publisherId) {
+    if (this.watchHash.secondaryLocs[publisherId]) {
+      for (var i=0; i < this.post.secondaryLocs.length; i++) {
+        var x = this.post.secondaryLocs[i];
+        if (x.publisherId == publisherId) {
+          this.post.secondaryLocs.splice(i, 1);
+          this.watchHash.secondaryLocs[publisherId] = undefined;
+          this.commitChangesInPost();
+        }
+      }
+    }
   },
 
   resetPost: function() {
@@ -67,6 +116,7 @@ var Store = {
         blurb: "",
         fullText: ""
       }
+      this.watchHash.secondaryLocs = {};
       this.commitChangesInPost();
   },
 

@@ -53,17 +53,21 @@
         <h3>Post to</h3>
         <div class="mui-select mui-textfield" show={ !Store.post.primaryLocExisting }>
           <label>Primary Location</label>
-          <select id="primaryLocationSelector">
-            <option each={ v in Store.publishers.filter(primaryOnlyFilter) } value={ v.publisherId }>{ v.publisherName }</option>
+          <select id="primary-loc-selector" onchange={ primaryLocSelectionChanged }>
+            <option each={ v in Store.allowedAsPrimaryPublishers() } value={ v.publisherId }>{ v.publisherName }</option>
           </select>
         </div>
         <div class="mui-textfield">
           <label>Secondary Locations</label>
         </div>
+        <div class="mui-panel" each={ v in Store.post.secondaryLocs }>
+          <p>{ v.publisherName }</p>
+          <button class="mui-btn mui-btn--small" onclick={ removeSecLocButtonClicked }>Remove</button>
+        </div>
         <div id="sec-loc-action-div" class="right-float-action">
           <div id="sec-loc-select-field" class="mui-select mui-textfield" >
             <select id="sec-loc-select">
-              <option each={ v in Store.publishers } value={ v.publisherId }>{ v.publisherName }</option>
+              <option each={ v in Store.availPublishersForSecondaryLoc() } value={ v.publisherId }>{ v.publisherName }</option>
             </select>
           </div>
           <button class="mui-btn mui-btn--small mui-btn--fab sec-loc-fab" onclick={ addSecLocClicked }>+</button>
@@ -87,6 +91,10 @@
       } else {
         self["primary-loc-type-selector"].value = "anew";
         self.tags["pm-collapsible"]["primary-main-body-input"].value = Store.post.fullText;
+        if (Store.post.primaryLoc) {
+          self["primary-loc-selector"].value = Store.post.primaryLoc.publisherId;
+        }
+        self.primaryLocSelectionChanged();
       }
     });
 
@@ -128,12 +136,23 @@
       self.update();
     }
 
-    self.primaryOnlyFilter = function(x) {
-      return x.allowedAsPrimary;
+    self.primaryLocSelectionChanged = function() {
+      console.log("primaryLocSelectionChanged!");
+      var loc = self["primary-loc-selector"].value;
+      Store.post.primaryLoc = Store.findPublisher(loc);
+      Store.commitChangesInPost();
+      self.update();
+    }
+
+    self.removeSecLocButtonClicked = function(evt) {
+      console.log("rslbt: "+ evt.item.v.publisherId)
+      Store.removeSecondaryLocFromPost(evt.item.v.publisherId);
     }
 
     self.addSecLocClicked = function() {
-
+      var x = self["sec-loc-select"].value;
+      console.log(x);
+      Store.addSecondaryLocToPost(x);
     }
 
     self.clearAllButtonClicked = function() {
@@ -143,7 +162,7 @@
 
     self.publishButtonClicked = function() {
       console.log("Publish Button Clicked!");
-      console.log(self["sec-loc-select"].value);
+      console.log(Store.availPublishersForSecondaryLoc());
     }
   </script>
   <style scoped>
