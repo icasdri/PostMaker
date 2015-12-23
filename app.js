@@ -80,7 +80,7 @@ var Store = {
     for (var i=0; i < this.publishers.length; i++) {
       var x = this.publishers[i];
       if (x.publisherId == publisherId) {
-        this.publishers.splice(i);
+        this.publishers.splice(i, 1);
         localStorage.setItem("publishers", JSON.stringify(this.publishers));
         return publisherId;
       }

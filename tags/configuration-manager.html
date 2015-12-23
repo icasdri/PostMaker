@@ -108,6 +108,11 @@
     }
     self.deleteButtonClicked = function() {
       console.log("Delete button clicked!");
+      if (self.pubconfTag) {
+        Store.removePublisher(opts.pub.publisherId);
+      } else {
+        console.log("WARN: Attempted to call del on incomplete pubconf-container (pubconfTag not mounted!)");
+      }
     }
     var mountPoint = internal["pubconf-mount-point"];
     var mountedTagArray = riot.mount(mountPoint, pubconfTagName, opts);
