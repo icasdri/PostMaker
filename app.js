@@ -37,6 +37,7 @@ var AppConf = {
 
 var Store = {
   publishers: null,
+  post: null,
 
   init: function() {
       var pubListJson = localStorage.getItem("publishers");
@@ -47,6 +48,30 @@ var Store = {
         localStorage.setItem("publishers", "[]");
         localStorage.setItem("publishers_idCount", "0");
       }
+
+      var postJson = sessionStorage.getItem("post");
+      if (postJson) {
+        this.post = JSON.parse(postJson);
+      } else {
+        this.resetPost();
+      }
+  },
+
+  resetPost: function() {
+      this.post = {
+        secondaryLocs: [],
+        primaryLoc: null,
+        primaryLocUrl: "",
+        primaryLocExisting: true,
+        title: "",
+        blurb: "",
+        fullText: ""
+      }
+      this.commitChangesInPost();
+  },
+
+  commitChangesInPost: function() {
+    sessionStorage.setItem("post", JSON.stringify(this.post));
   },
 
   addPublisher: function(publisherType) {
@@ -69,6 +94,15 @@ var Store = {
 
   commitChangesInPublishers: function() {
     localStorage.setItem("publishers", JSON.stringify(this.publishers));
+  },
+
+  findPublisher: function(publisherId) {
+    for (var i=0; i < this.publishers.length; i++) {
+      var x = this.publishers[i];
+      if (x.publisherId == publisherId) {
+        return x;
+      }
+    }
   },
 
   removePublisher: function(publisherId) {

@@ -24,26 +24,26 @@
           <legend>New Post</legend>
           <div class="mui-textfield">
             <label>Title</label>
-            <input type="text" tabindex="1" id="titleInput" style="font-size: 132%;">
+            <input type="text" tabindex="1" id="title-entry" style="font-size: 132%;">
           </div>
           <div class="mui-select mui-textfield">
             <label>Primary Location</label>
-            <select id="primaryLocationTypeSelector" onchange={ update }>
+            <select id="primary-loc-type-selector" onchange={ primaryLocTypeSelectionChanged }>
               <option value="existing">Use Existing</option>
               <option value="anew">Post Anew</option>
             </select>
           </div>
-          <div class="mui-textfield" show={ primaryLocationTypeSelector.value == 'existing' }>
+          <div class="mui-textfield" show={ Store.post.primaryLocExisting }>
             <label>Existing Primary URL</label>
-            <input type="text" tabindex="2" id="primaryUrlInput">
+            <input type="text" tabindex="2" id="primary-url-input">
           </div>
-          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ primaryLocationTypeSelector.value == 'anew' }>
+          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ !Store.post.primaryLocExisting }>
             <label>Main Body</label>
-            <textarea style="height: 200px;" tabindex="2" id="primaryMainBodyInput"></textarea>
+            <textarea style="height: 200px;" tabindex="2" id="primary-main-body-input"></textarea>
           </pm-collapsible>
           <div class="mui-textfield">
             <label>Blurb</label>
-            <textarea tabindex="3" id="blurbInput"></textarea>
+            <textarea tabindex="3" id="blurb-input"></textarea>
           </div>
         </form>
       </div>
@@ -51,7 +51,7 @@
     <div class="mui-col-md-5">
       <div class="mui-panel destination-panel">
         <h3>Post to</h3>
-        <div class="mui-select mui-textfield">
+        <div class="mui-select mui-textfield" show={ !Store.post.primaryLocExisting }>
           <label>Primary Location</label>
           <select id="primaryLocationSelector">
             <option each={ v in Store.publishers.filter(primaryOnlyFilter) } value={ v.publisherId }>{ v.publisherName }</option>
@@ -66,20 +66,69 @@
               <option each={ v in Store.publishers } value={ v.publisherId }>{ v.publisherName }</option>
             </select>
           </div>
-          <button class="mui-btn mui-btn--small mui-btn--fab sec-loc-fab">+</button>
+          <button class="mui-btn mui-btn--small mui-btn--fab sec-loc-fab" onclick={ addSecLocClicked }>+</button>
         </div>
       </div>
      <button class="mui-btn mui-btn--primary right-float-action" onclick={ publishButtonClicked }>Publish!</button>
+     <button class="mui-btn right-float-action" onclick={ clearAllButtonClicked }>Clear All</button>
     </div>
   </div>
   <script>
     var self = this;
     self.name = "Post Creator!";
+    self.on("mount", function() {
+      console.log("post-creator is getting mounted.");
+      self["title-entry"].value = Store.post.title;
+      self["blurb-input"].value = Store.post.blurb;
+      if(Store.post.primaryLocExisting) {
+        self["primary-loc-type-selector"].value = "existing";
+        self["primary-url-input"].value = Store.post.primaryLocUrl;
+      } else {
+        self["primary-loc-type-selector"].value = "anew";
+        self["primary-main-body-input"].value = Store.post.fullText;
+      }
+    });
     self.on("unmount", function() {
-      console.log("post-creator is getting unmounted.")
-    })
+      console.log("post-creator is getting unmounted.");
+      Store.post.title = self["title-entry"].value;
+      Store.post.blurb = self["blurb-input"].value;
+      var val = self["primary-loc-type-selector"].value;
+      console.log("primary-loc-type-selector --> " + val);
+      if (val == "existing") {
+        Store.post.primaryLocExisting = true;
+        Store.post.primaryLocUrl = self["primary-url-input"].value;
+      } else if (val == "anew") {
+        Store.post.primaryLocExisting = false;
+        Store.post.fullText = self["primary-main-body-input"].value;
+      } else {
+        console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
+      }
+      Store.commitChangesInPost();
+    });
+    self.on("update", function() {
+
+    });
+    self.primaryLocTypeSelectionChanged = function() {
+      var val = self["primary-loc-type-selector"].value;
+      console.log("primary-loc-type-selector --> " + val);
+      if (val == "existing") {
+        Store.post.primaryLocExisting = true;
+      } else if (val == "anew") {
+        Store.post.primaryLocExisting = false;
+      } else {
+        console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
+      }
+      self.update();
+    }
     self.primaryOnlyFilter = function(x) {
       return x.allowedAsPrimary;
+    }
+    self.addSecLocClicked = function() {
+
+    }
+    self.clearAllButtonClicked = function() {
+      Store.resetPost();
+      self.trigger("mount");
     }
     self.publishButtonClicked = function() {
       console.log("Publish Button Clicked!");
@@ -97,6 +146,7 @@
     .right-float-action {
       float: right;
       margin-top: -5px;
+      margin-left: 3px;
     }
     #sec-loc-select-field {
       display: inline-block;
