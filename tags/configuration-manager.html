@@ -73,7 +73,7 @@
     <span title="If checked, allows this publisher to be selected as a primary location">
       <div class="mui-checkbox pcc-floating-action">
         <label>
-          <input type="checkbox" checked={ parent.opts.pub.allowedAsPrimary }>
+          <input id="allowed-as-primary-checkbox" type="checkbox" checked={ parent.opts.pub.allowedAsPrimary }>
           P
         </label>
       </div>
@@ -88,18 +88,32 @@
   </pm-collapsible>
   <script>
     var self = this;
+    var pubconfTag = null;
+    var internal = this.tags["pm-collapsible"];
+    var pubconfTagName = "pubconf-" + opts.pub.publisherType
     self.isExpanded = false;
     self.headerClicked = function() {
       self.isExpanded = !self.isExpanded;
     }
     self.saveButtonClicked = function() {
       console.log("Save button clicked!");
+      if (self.pubconfTag) {
+        self.pubconfTag.saveViaMutate();
+        opts.pub.publisherName = internal["publisher-name-input"].value;
+        opts.pub.allowedAsPrimary = internal["allowed-as-primary-checkbox"].checked;
+        Store.commitChangesInPublishers();
+      } else {
+        console.log("WARN: Attempted to call save on incomplete pubconf-container (pubconfTag not mounted!)");
+      }
     }
     self.deleteButtonClicked = function() {
       console.log("Delete button clicked!");
     }
-    var mountPoint = this.tags["pm-collapsible"]["pubconf-mount-point"]
-    riot.mount(mountPoint, "pubconf-" + opts.pub.publisherType, opts.pub);
+    var mountPoint = internal["pubconf-mount-point"];
+    var mountedTagArray = riot.mount(mountPoint, pubconfTagName, opts);
+    if (mountedTagArray) {
+      self.pubconfTag = mountedTagArray[0];
+    }
   </script>
   <style scoped>
     #pc-header {

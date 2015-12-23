@@ -1,19 +1,28 @@
 <pubconf-wordpress>
   <div class="mui-textfield">
-    <label>WordPress PubConf</label>
-    <input type="text">
+    <label>Wordpress Site URL</label>
+    <input id="url-input" type="text" value={ opts.pub.url }>
   </div>
-  <div class="mui-select mui-textfield">
-    <label>Test Field 2</label>
-    <select>
-      <option value="a">Option A</option>
-      <option value="b">Option B</option>
-    </select>
+  <div class="mui-textfield">
+    <label>Categories (comma-separated list)</label>
+    <input id="categories-input" type="text" value={ opts.pub.categories }>
   </div>
   <script>
-    this.on("mount", function() {
+    var self = this;
+    self.on("mount", function() {
       console.log("pubconf-wordpress is getting mounted");
     });
+    // self.getAllInput = function() {
+    //   return {
+    //     url: self["url-input"].value,
+    //     categories: self["categories-input"].value
+    //   }
+    // }
+    self.saveViaMutate = function() {
+      console.log("pubconf-wordpress' saveViaMutate() is getting called");
+      opts.pub.url = self["url-input"].value;
+      opts.pub.categories = self["categories-input"].value;
+    }
   </script>
 </pubconf-wordpress>
 

@@ -21,8 +21,8 @@ var AppConf = {
     "wordpress": {
       typeName: "WordPress",
       configTemplate: JSON.stringify({
-        url: "",
-        categories: []
+        url: "http://example.com",
+        categories: ""
       })
     },
     "facebook-group": {
@@ -65,6 +65,15 @@ var Store = {
     } else {
       console.log("E: Attempted to add publisher with invalid publisher type: " + publisherType);
     }
+  },
+
+  // savePublisher: function(pub) {  // where pub has all the new data and an existing publisherId
+  //
+  // }
+  //
+
+  commitChangesInPublishers: function() {
+    localStorage.setItem("publishers", JSON.stringify(this.publishers));
   },
 
   removePublisher: function(publisherId) {
