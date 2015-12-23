@@ -60,8 +60,8 @@
         <div class="mui-textfield">
           <label>Secondary Locations</label>
         </div>
-        <div class="mui-panel" each={ v in Store.post.secondaryLocs }>
-          <p>{ v.publisherName }</p>
+        <div class="mui-panel sec-loc-disp" each={ v in Store.post.secondaryLocs }>
+          <h4>{ v.publisherName }</h4>
           <button class="mui-btn mui-btn--small" onclick={ removeSecLocButtonClicked }>Remove</button>
         </div>
         <div id="sec-loc-action-div" class="right-float-action">
@@ -166,6 +166,9 @@
     }
   </script>
   <style scoped>
+    .mui-container {
+      margin-bottom: 20px;
+    }
     textarea {
       max-width: 100%;
       min-width: 100%;
@@ -185,6 +188,17 @@
     }
     #sec-loc-fab {
       display: inline-block;
+    }
+    .sec-loc-disp {
+      margin-bottom: 8px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    .sec-loc-disp * {
+      display: inline-block;
+    }
+    .sec-loc-disp .mui-btn {
+      float: right;
     }
   </style>
 </post-creator>
