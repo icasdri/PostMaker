@@ -62,18 +62,22 @@
 <container-pubconf>
   <div class="mui-panel" id="pc-header" onclick={ headerClicked }>
     <h4>{ opts.pub.publisherName }</h4>
-    <h5 if={ opts.pub.allowedAsPrimary }>&nbsp;(✓P)</h5>
+    <span if={ opts.pub.allowedAsPrimary } title="This publisher can be a primary location.">
+      <h5>&nbsp;(✓P)</h5>
+    </span>
     <h5>{ AppConf.PUBLISHER_TYPES[opts.pub.publisherType].typeName }</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
     <button class="mui-btn mui-btn--small mui-btn--primary pcc-floating-action" onclick={ parent.saveButtonClicked }>Save</button>
     <button class="mui-btn mui-btn--small mui-btn--danger pcc-floating-action" onclick={ parent.deleteButtonClicked }>Del</button>
-    <div class="mui-checkbox pcc-floating-action">
-      <label>
-        <input type="checkbox" checked={ parent.opts.pub.allowedAsPrimary }>
-        P
-      </label>
-    </div>
+    <span title="If checked, allows this publisher to be selected as a primary location">
+      <div class="mui-checkbox pcc-floating-action">
+        <label>
+          <input type="checkbox" checked={ parent.opts.pub.allowedAsPrimary }>
+          P
+        </label>
+      </div>
+    </span>
     <div id="publisher-name-textfield-div" class="mui-textfield">
       <label>Display Name</label>
       <input id="publisher-name-input" type="text" value={ parent.opts.pub.publisherName }>
@@ -108,7 +112,7 @@
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    #pc-header h5 {
+    #pc-header h5, span {
       float: right;
     }
     #publisher-name-textfield-div {
