@@ -62,10 +62,22 @@
 <container-pubconf>
   <div class="mui-panel" id="pc-header" onclick={ headerClicked }>
     <h4>{ opts.pub.publisherName }</h4>
-    <h5 if={ !opts.pub.allowedAsPrimary }>&nbsp(P✓)</h5>
+    <h5 if={ opts.pub.allowedAsPrimary }>&nbsp(✓P)</h5>
     <h5>{ AppConf.PUBLISHER_TYPES[opts.pub.publisherType].typeName }</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
+    <button class="mui-btn mui-btn--small mui-btn--primary pcc-floating-action" onclick={ parent.saveButtonClicked }>Save</button>
+    <button class="mui-btn mui-btn--small mui-btn--danger pcc-floating-action" onclick={ parent.deleteButtonClicked }>Del</button>
+    <div class="mui-checkbox pcc-floating-action">
+      <label>
+        <input type="checkbox" checked={ parent.opts.pub.allowedAsPrimary }>
+        P
+      </label>
+    </div>
+    <div id="publisher-name-textfield-div" class="mui-textfield">
+      <label>Display Name</label>
+      <input id="publisher-name-input" type="text" value={ parent.opts.pub.publisherName }>
+    </div>
     <div id="pubconf-mount-point">
       <em>This is not displaying properly. Try navigating to Configure directly from Create.</em>
     </div>
@@ -75,6 +87,12 @@
     self.isExpanded = false;
     self.headerClicked = function() {
       self.isExpanded = !self.isExpanded;
+    }
+    self.saveButtonClicked = function() {
+      console.log("Save button clicked!");
+    }
+    self.deleteButtonClicked = function() {
+      console.log("Delete button clicked!");
     }
     var mountPoint = this.tags["pm-collapsible"]["pubconf-mount-point"]
     riot.mount(mountPoint, "pubconf-" + opts.pub.publisherType, opts.pub);
@@ -92,6 +110,13 @@
     }
     #pc-header h5 {
       float: right;
+    }
+    #publisher-name-textfield-div {
+      width: 70%;
+    }
+    .pcc-floating-action {
+      float: right;
+      margin-left: 3px;
     }
   </style>
 </container-pubconf>
