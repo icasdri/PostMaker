@@ -21,7 +21,7 @@ var AppConf = {
     "wordpress": {
       typeName: "WordPress",
       configTemplate: JSON.stringify({
-        url: "http://example.com",
+        url: "",
         categories: ""
       })
     },
@@ -66,11 +66,6 @@ var Store = {
       console.log("E: Attempted to add publisher with invalid publisher type: " + publisherType);
     }
   },
-
-  // savePublisher: function(pub) {  // where pub has all the new data and an existing publisherId
-  //
-  // }
-  //
 
   commitChangesInPublishers: function() {
     localStorage.setItem("publishers", JSON.stringify(this.publishers));

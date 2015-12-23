@@ -24,7 +24,7 @@
       <button class="mui-btn">Load from File</button>
     </div>
     <div class="mui-col-md-8 mui-col-lg-8">
-      <h3>Publishers { remark }</h3>
+      <h3>Publishers</h3>
       <container-pubconf each={ v in Store.publishers } pub={ v }></container-pubconf>
       <div id="add-pub-action-div">
         <div id="add-pub-select-field" class="mui-select mui-textfield" >
@@ -41,7 +41,6 @@
     self.addPublisherFabClicked = function() {
       Store.addPublisher(this["add-pub-select"].value);
     }
-    this.remark = "Yay!";
   </script>
   <style scoped>
     #add-pub-action-div {

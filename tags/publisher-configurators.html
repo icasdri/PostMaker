@@ -1,4 +1,22 @@
 <pubconf-wordpress>
+  <!--
+  Copyright 2015 icasdri
+
+  This file is part of PostMaker.
+
+  PostMaker is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  PostMaker is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
+  -->
   <div class="mui-textfield">
     <label>Wordpress Site URL</label>
     <input id="url-input" type="text" value={ opts.pub.url }>
@@ -12,12 +30,6 @@
     self.on("mount", function() {
       console.log("pubconf-wordpress is getting mounted");
     });
-    // self.getAllInput = function() {
-    //   return {
-    //     url: self["url-input"].value,
-    //     categories: self["categories-input"].value
-    //   }
-    // }
     self.saveViaMutate = function() {
       console.log("pubconf-wordpress' saveViaMutate() is getting called");
       opts.pub.url = self["url-input"].value;
@@ -28,7 +40,11 @@
 
 <pubconf-facebook-group>
   <div class="mui-textfield">
-    <label>Facebook Group PubConf</label>
+    <label>Group ID</label>
+    <input type="text">
+  </div>
+  <div class="mui-textfield">
+    <label>API Key</label>
     <input type="text">
   </div>
   <script>
