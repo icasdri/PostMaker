@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var AppConf = {
+var App = {
   PUBLISHER_TYPES: {
     "wordpress": {
       typeName: "WordPress",
@@ -76,7 +76,7 @@ var Store = {
 
   addPublisher: function(publisherType) {
     console.log("Adding publisher of type: " + publisherType);
-    publisherTypeConf = AppConf.PUBLISHER_TYPES[publisherType];
+    publisherTypeConf = App.PUBLISHER_TYPES[publisherType];
     if (publisherTypeConf) {
       publisherConfig = JSON.parse(publisherTypeConf.configTemplate);
       var newId = parseInt(localStorage.getItem("publishers_idCount")) + 1;
@@ -118,6 +118,11 @@ var Store = {
     return null;
   }
 };
+
+riot.observable(App);
+window.onbeforeunload = function() {
+  App.trigger("unload");
+}
 
 riot.observable(Store);
 Store.init();

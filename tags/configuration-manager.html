@@ -29,7 +29,7 @@
       <div id="add-pub-action-div">
         <div id="add-pub-select-field" class="mui-select mui-textfield" >
           <select id="add-pub-select">
-            <option each={ k, v in AppConf.PUBLISHER_TYPES } value={ k }>{ v.typeName }</option>
+            <option each={ k, v in App.PUBLISHER_TYPES } value={ k }>{ v.typeName }</option>
           </select>
         </div>
         <button id="add-pub-fab" class="mui-btn mui-btn--primary mui-btn--fab" onclick={ addPublisherFabClicked }>+</button>
@@ -64,7 +64,7 @@
     <span if={ opts.pub.allowedAsPrimary } title="This publisher can be a primary location.">
       <h5>&nbsp;(✓P)</h5>
     </span>
-    <h5>{ AppConf.PUBLISHER_TYPES[opts.pub.publisherType].typeName }</h5>
+    <h5>{ App.PUBLISHER_TYPES[opts.pub.publisherType].typeName }</h5>
   </div>
   <pm-collapsible outerclass="mui-panel" vpadding=30 expanded={ isExpanded }>
     <button class="mui-btn mui-btn--small mui-btn--primary pcc-floating-action" onclick={ parent.saveButtonClicked }>Save</button>

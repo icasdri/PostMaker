@@ -107,6 +107,9 @@
       }
       Store.commitChangesInPost();
     });
+    App.on("unload", function() {
+      self.trigger("unmount");
+    });
 
     self.on("update", function() {
 
@@ -137,7 +140,7 @@
       Store.resetPost();
       self.trigger("mount");
     }
-    
+
     self.publishButtonClicked = function() {
       console.log("Publish Button Clicked!");
       console.log(self["sec-loc-select"].value);
