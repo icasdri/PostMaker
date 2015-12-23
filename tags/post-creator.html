@@ -54,16 +54,22 @@
         <div class="mui-select mui-textfield">
           <label>Primary Location</label>
           <select id="primaryLocationSelector">
-            <option value="prim_pub_x">Primary Publisher X</option>
-            <option value="prim_pub_y">Primiary Publisher Y</option>
+            <option each={ v in Store.publishers.filter(primaryOnlyFilter) } value={ v.publisherId }>{ v.publisherName }</option>
           </select>
         </div>
         <div class="mui-textfield">
           <label>Secondary Locations</label>
         </div>
-        <button class="mui-btn mui-btn--small mui-btn--fab" style="float: right;">+</button>
+        <div id="sec-loc-action-div" class="right-float-action">
+          <div id="sec-loc-select-field" class="mui-select mui-textfield" >
+            <select id="sec-loc-select">
+              <option each={ v in Store.publishers } value={ v.publisherId }>{ v.publisherName }</option>
+            </select>
+          </div>
+          <button class="mui-btn mui-btn--small mui-btn--fab sec-loc-fab">+</button>
+        </div>
       </div>
-     <button class="mui-btn mui-btn--primary" style="float: right; margin-top: -5px;" >Publish!</button>
+     <button class="mui-btn mui-btn--primary right-float-action" onclick={ publishButtonClicked }>Publish!</button>
     </div>
   </div>
   <script>
@@ -72,6 +78,13 @@
     self.on("unmount", function() {
       console.log("post-creator is getting unmounted.")
     })
+    self.primaryOnlyFilter = function(x) {
+      return x.allowedAsPrimary;
+    }
+    self.publishButtonClicked = function() {
+      console.log("Publish Button Clicked!");
+      console.log(self["sec-loc-select"].value);
+    }
   </script>
   <style scoped>
     textarea {
@@ -80,6 +93,18 @@
     }
     .destination-panel h3 {
       margin-top: 0px;
+    }
+    .right-float-action {
+      float: right;
+      margin-top: -5px;
+    }
+    #sec-loc-select-field {
+      display: inline-block;
+      min-width: 250px;
+      margin-right: 5px;
+    }
+    #sec-loc-fab {
+      display: inline-block;
     }
   </style>
 </post-creator>
