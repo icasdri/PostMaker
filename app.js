@@ -18,9 +18,10 @@ along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 
 var App = {
   COLORS: {
-    PRIMARY: "#2196F3",
-    WARNING: "#E8DD33",
-    ERROR: "#F44336"
+    PRIMARY: "#2196F3", // mui-color("blue")
+    SUCCESS: "#4CAF50", // mui-color("green")
+    WARNING: "#FFEB3B", // mui-color("yellow")
+    ERROR: "#F44336" // mui-color("red")
   },
   PUBLISHER_TYPES: {
     "wordpress": {
