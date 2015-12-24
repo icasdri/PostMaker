@@ -17,6 +17,11 @@ along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 var App = {
+  COLORS: {
+    PRIMARY: "#2196F3",
+    WARNING: "#E8DD33",
+    ERROR: "#F44336"
+  },
   PUBLISHER_TYPES: {
     "wordpress": {
       typeName: "WordPress",
@@ -190,6 +195,10 @@ riot.route("/create", function() {
 
 riot.route("/configure", function() {
   riot.mount("pm-view", "configuration-manager");
+});
+
+riot.route("/publish", function() {
+  riot.mount("pm-view", "post-publisher");
 });
 
 riot.route.start(true);
