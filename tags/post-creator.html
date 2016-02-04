@@ -102,16 +102,9 @@
       console.log("post-creator is getting unmounted.");
       Store.post.title = self["title-entry"].value;
       Store.post.blurb = self["blurb-input"].value;
-      var val = self["primary-loc-type-selector"].value;
-      console.log("primary-loc-type-selector --> " + val);
-      if (val == "existing") {
-        Store.post.primaryLocExisting = true;
-        Store.post.primaryLocUrl = self["primary-url-input"].value;
-      } else if (val == "anew") {
-        Store.post.primaryLocExisting = false;
+      self.recalculatePrimaryLocInPost();
+      if (!Store.post.primaryLocExisting) {
         Store.post.fullText = self.tags["pm-collapsible"]["primary-main-body-input"].value;
-      } else {
-        console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
       }
       Store.commitChangesInPost();
     });
@@ -124,24 +117,28 @@
     });
 
     self.primaryLocTypeSelectionChanged = function() {
-      var val = self["primary-loc-type-selector"].value;
-      console.log("primary-loc-type-selector --> " + val);
-      if (val == "existing") {
-        Store.post.primaryLocExisting = true;
-      } else if (val == "anew") {
-        Store.post.primaryLocExisting = false;
-      } else {
-        console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
-      }
+      self.recalculatePrimaryLocInPost();
       self.update();
     }
 
     self.primaryLocSelectionChanged = function() {
-      console.log("primaryLocSelectionChanged!");
-      var loc = self["primary-loc-selector"].value;
-      Store.post.primaryLoc = Store.findPublisher(loc);
-      Store.commitChangesInPost();
+      self.recalculatePrimaryLocInPost();
       self.update();
+    }
+
+    self.recalculatePrimaryLocInPost = function() {
+      var val = self["primary-loc-type-selector"].value;
+      if (val == "existing") {
+        Store.post.primaryLocExisting = true;
+        Store.post.primaryLocUrl = self["primary-url-input"].value;
+        Store.post.primaryLoc = null;
+      } else if (val == "anew") {
+        Store.post.primaryLocExisting = false;
+        var loc = self["primary-loc-selector"].value;
+        Store.post.primaryLoc = Store.findPublisher(loc);
+      } else {
+        console.log("Unexpeceted option from primary-loc-type-selector. Got " + val + ". Expected 'existing' or 'anew'.")
+      }
     }
 
     self.removeSecLocButtonClicked = function(evt) {
