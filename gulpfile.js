@@ -1,21 +1,41 @@
 var gulp = require('gulp');
+var gulpif = require('gulp-if');
+var merge2 = require('merge2');
+var inject = require('gulp-inject');
+var concat = require('gulp-concat');
 var riot = require('gulp-riot');
 var mainBowerFiles = require('main-bower-files');
+var uglify = require('gulp-uglify');
 
-gulp.task('riot', function() {
-  return gulp.src('tags/*')
+var args = require('minimist')(process.argv.slice(2));
+var PROD = args.production;
+var TARGET = PROD ? 'dist/' : 'dev/';
+
+gulp.task('build', function() {
+
+  gulp.src(mainBowerFiles())
+    .pipe(gulp.dest(TARGET + 'libs'));
+
+  var tags = gulp.src('tags/*')
     .pipe(riot())
-    .pipe(gulp.dest('dist/tags'));
+
+  var app = gulp.src('app.js')
+
+  var js_files = merge2(app, tags)
+    .pipe(gulpif(PROD, uglify()))
+    .pipe(gulpif(PROD, concat('all.js')))
+
+  gulp.src('index.html')
+    .pipe(inject(js_files, {relative: true, ignorePath: TARGET}))
+    .pipe(gulp.dest(TARGET));
+
+  if (PROD) {
+    js_files.pipe(gulp.dest(TARGET));
+  } else {
+    app.pipe(gulp.dest(TARGET));
+    tags.pipe(gulp.dest(TARGET + 'tags'));
+  }
+
 });
 
-gulp.task('bower', function() {
-  return gulp.src(mainBowerFiles())
-    .pipe(gulp.dest('dist/libs'));
-});
-
-gulp.task('app-files', function() {
-  return gulp.src(['app.js', 'index.html'])
-    .pipe(gulp.dest('dist'))
-})
-
-gulp.task('default', ['bower', 'riot', 'app-files']);
+gulp.task('default', ['build']);

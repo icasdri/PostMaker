@@ -25,24 +25,19 @@ along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="libs/mui.min.css"/>
   <script src="libs/mui.min.js"></script>
+  <!-- build:remove -->
   <style>
     .mui-ripple-effect {
       animation: none;
     }
   </style>
+  <!-- endbuild -->
 </head>
 <body>
   <header riot-tag="pm-appbar" class="mui-appbar mui--appbar-line-height" style="margin-bottom: 10px;"></header>
   <pm-view></pm-view>
   <script src="libs/riot.min.js"></script>
-  <script src="tags/pm-progressbar.js"></script>
-  <script src="tags/pm-collapsible.js"></script>
-  <script src="tags/pm-appbar.js"></script>
-  <script src="tags/post-creator.js"></script>
-  <script src="tags/post-publisher.js"></script>
-  <script src="tags/configuration-manager.js"></script>
-  <script src="tags/publisher-configurators.js"></script>
-  <script src="tags/publisher-workers.js"></script>
-  <script src="app.js"></script>
+  <!-- inject:js -->
+  <!-- endinject -->
 </body>
 </html>
