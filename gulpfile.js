@@ -22,7 +22,7 @@ gulp.task('build', function() {
 
   var app = gulp.src('app.js')
 
-  var js_files = merge2(app, tags)
+  var js_files = merge2(tags, app)
     .pipe(gulpif(PROD, uglify()))
     .pipe(gulpif(PROD, concat('all.js')))
 
