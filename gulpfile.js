@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var connect = require('gulp-connect');
 var gulpif = require('gulp-if');
 var merge2 = require('merge2');
 var inject = require('gulp-inject');
@@ -39,3 +40,10 @@ gulp.task('build', function() {
 });
 
 gulp.task('default', ['build']);
+
+gulp.task('server', function() {
+  connect.server({
+    root: TARGET,
+    port: args.port ? args.port : 8000
+  });
+});
