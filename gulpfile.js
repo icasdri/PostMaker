@@ -41,7 +41,8 @@ gulp.task('build', function() {
 
 gulp.task('default', ['build']);
 
-gulp.task('server', function() {
+gulp.task('server', ['build'], function() {
+  gulp.watch(['tags/*', 'app.js', 'index.html'], ['build']);
   connect.server({
     root: TARGET,
     port: args.port ? args.port : 8000
