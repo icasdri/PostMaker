@@ -28,6 +28,8 @@ gulp.task('build', function() {
 
   gulp.src('index.html')
     .pipe(inject(js_files, {relative: true, ignorePath: TARGET}))
+    .pipe(inject(gulp.src(TARGET + 'libs/*.js', {read: false}), {name: 'libs', relative: true, ignorePath: TARGET}))
+    .pipe(inject(gulp.src(TARGET + 'libs/*.css', {read: false}), {name: 'libs', relative: true, ignorePath: TARGET}))
     .pipe(gulp.dest(TARGET));
 
   if (PROD) {

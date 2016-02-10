@@ -10,10 +10,15 @@
   },
   "overrides": {
     "riot": {
-      "main": ["riot.min.js"]
+      "main": [
+        "riot.min.js"
+      ]
     },
     "mui": {
-      "main": ["dist/css/mui.min.css", "dist/js/mui.min.js"]
+      "main": [
+        "dist/css/mui.min.css",
+        "dist/js/mui.min.js"
+      ]
     }
   }
 }
