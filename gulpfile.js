@@ -13,8 +13,7 @@ var PROD = args.production;
 var TARGET = PROD ? 'dist/' : 'dev/';
 
 gulp.task('build', function() {
-
-  gulp.src(mainBowerFiles())
+  var libs = gulp.src(mainBowerFiles())
     .pipe(gulp.dest(TARGET + 'libs'));
 
   var tags = gulp.src('tags/*')
@@ -28,8 +27,7 @@ gulp.task('build', function() {
 
   gulp.src('index.html')
     .pipe(inject(js_files, {relative: true, ignorePath: TARGET}))
-    .pipe(inject(gulp.src(TARGET + 'libs/*.js', {read: false}), {name: 'libs', relative: true, ignorePath: TARGET}))
-    .pipe(inject(gulp.src(TARGET + 'libs/*.css', {read: false}), {name: 'libs', relative: true, ignorePath: TARGET}))
+    .pipe(inject(libs, {name: 'libs', relative: true, ignorePath: TARGET}))
     .pipe(gulp.dest(TARGET));
 
   if (PROD) {
@@ -38,7 +36,6 @@ gulp.task('build', function() {
     app.pipe(gulp.dest(TARGET));
     tags.pipe(gulp.dest(TARGET + 'tags'));
   }
-
 });
 
 gulp.task('default', ['build']);
