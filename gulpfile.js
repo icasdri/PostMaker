@@ -7,6 +7,7 @@ var concat = require('gulp-concat');
 var riot = require('gulp-riot');
 var mainBowerFiles = require('main-bower-files');
 var uglify = require('gulp-uglify');
+var surge = require('gulp-surge');
 
 var args = require('minimist')(process.argv.slice(2));
 var PROD = args.production;
@@ -46,4 +47,12 @@ gulp.task('server', ['build'], function() {
     root: TARGET,
     port: args.port ? args.port : 8000
   });
+});
+
+gulp.task('deploy', ['build'], function() {
+    require('sleep').sleep(10);
+    surge({
+        project: TARGET,
+        domain: 'postmaker.surge.sh'
+    });
 });
