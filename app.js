@@ -116,8 +116,7 @@ var Store = {
       this.post = {
         secondaryLocs: [],
         primaryLoc: null,
-        primaryLocUrl: "",
-        primaryLocExisting: true,
+        existingPrimaryUrl: "",
         title: "",
         blurb: "",
         fullText: ""

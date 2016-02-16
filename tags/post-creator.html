@@ -33,11 +33,11 @@
               <option value="anew">Post Anew</option>
             </select>
           </div>
-          <div class="mui-textfield" show={ Store.post.primaryLocExisting }>
+          <div class="mui-textfield" show={ Store.post.existingPrimaryUrl != null }>
             <label>Existing Primary URL</label>
             <input type="text" tabindex="2" id="primary-url-input">
           </div>
-          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ !Store.post.primaryLocExisting }>
+          <pm-collapsible vpadding=15 innerclass="mui-textfield" expanded={ Store.post.existingPrimaryUrl == null }>
             <label>Main Body</label>
             <textarea style="height: 200px;" tabindex="2" id="primary-main-body-input"></textarea>
           </pm-collapsible>
@@ -51,7 +51,7 @@
     <div class="mui-col-md-5">
       <div class="mui-panel destination-panel">
         <h3>Post to</h3>
-        <div class="mui-select mui-textfield" show={ !Store.post.primaryLocExisting }>
+        <div class="mui-select mui-textfield" show={ Store.post.existingPrimaryUrl == null }>
           <label>Primary Location</label>
           <select id="primary-loc-selector" onchange={ primaryLocSelectionChanged }>
             <option each={ v in Store.allowedAsPrimaryPublishers() } value={ v.publisherId }>{ v.publisherName }</option>
@@ -85,16 +85,16 @@
       console.log("post-creator is getting mounted.");
       self["title-entry"].value = Store.post.title;
       self["blurb-input"].value = Store.post.blurb;
-      if(Store.post.primaryLocExisting) {
-        self["primary-loc-type-selector"].value = "existing";
-        self["primary-url-input"].value = Store.post.primaryLocUrl;
-      } else {
+      if(Store.post.existingPrimaryUrl == null) {
         self["primary-loc-type-selector"].value = "anew";
         self.tags["pm-collapsible"]["primary-main-body-input"].value = Store.post.fullText;
         if (Store.post.primaryLoc) {
           self["primary-loc-selector"].value = Store.post.primaryLoc.publisherId;
         }
         self.primaryLocSelectionChanged();
+      } else {
+        self["primary-loc-type-selector"].value = "existing";
+        self["primary-url-input"].value = Store.post.existingPrimaryUrl;
       }
     });
 
@@ -103,7 +103,7 @@
       Store.post.title = self["title-entry"].value;
       Store.post.blurb = self["blurb-input"].value;
       self.recalculatePrimaryLocInPost();
-      if (!Store.post.primaryLocExisting) {
+      if (Store.post.existingPrimaryUrl == null) {
         Store.post.fullText = self.tags["pm-collapsible"]["primary-main-body-input"].value;
       }
       Store.commitChangesInPost();
@@ -129,11 +129,10 @@
     self.recalculatePrimaryLocInPost = function() {
       var val = self["primary-loc-type-selector"].value;
       if (val == "existing") {
-        Store.post.primaryLocExisting = true;
-        Store.post.primaryLocUrl = self["primary-url-input"].value;
+        Store.post.existingPrimaryUrl = self["primary-url-input"].value;
         Store.post.primaryLoc = null;
       } else if (val == "anew") {
-        Store.post.primaryLocExisting = false;
+        Store.post.existingPrimaryUrl = null;
         var loc = self["primary-loc-selector"].value;
         Store.post.primaryLoc = Store.findPublisher(loc);
       } else {

@@ -20,7 +20,8 @@
   <div class="mui-container">
     <h2>Publishing《{ Store.post.title }》...</h2>
     <p><em>Please do not navigate away from this page until publishing is complete!</em></p>
-    <publisher-wrapper if={ !Store.post.primaryLocExisting } pub={ Store.post.primaryLoc } pubtype="primary"></publisher-wrapper>
+    <!-- TODO: These references will need to change to reference Store.publishing.post eventually -->
+    <publisher-wrapper if={ Store.post.existingPrimaryUrl } pub={ Store.post.primaryLoc } pubtype="primary"></publisher-wrapper>
     <publisher-wrapper each={ v in Store.post.secondaryLocs } pub={ v } pubtype="secondary"></publisher-wrapper>
   </div>
 </post-publisher>
