@@ -41,15 +41,21 @@
 <pubconf-facebook-group>
   <div class="mui-textfield">
     <label>Group ID</label>
-    <input type="text">
+    <input id="group-id-input" type="text" value={ opts.pub.groupId }>
   </div>
   <div class="mui-textfield">
     <label>API Key</label>
-    <input type="text">
+    <input id="api-key-input" type="text" value={ opts.pub.apiKey }>
   </div>
   <script>
-    this.on("mount", function() {
+    var self = this;
+    self.on("mount", function() {
       console.log("pubconf-facebook-group is getting mounted");
     });
+    self.saveViaMutate = function() {
+      console.log("pubconf-facebook-group's saveViaMutate() is getting called");
+      opts.pub.groupId = self["group-id-input"].value;
+      opts.pub.apiKey = self["api-key-input"].value;
+    }
   </script>
 </pubconf-facebook-group>
