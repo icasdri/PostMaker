@@ -25,13 +25,18 @@ along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- libs:css -->
   <!-- endinject -->
-  <!-- build:remove -->
+  <!-- removeIf(_keep_in_prod) -->
+  <script>
+    if (window.location.protocol != "https:") window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+  </script>
+  <!-- endRemoveIf(_keep_in_prod) -->
+  <!-- removeIf(_keep_in_dev) -->
   <style>
     .mui-ripple-effect {
       animation: none;
     }
   </style>
-  <!-- endbuild -->
+  <!-- endRemoveIf(_keep_in_dev) -->
 </head>
 <body>
   <header riot-tag="pm-appbar" class="mui-appbar mui--appbar-line-height" style="margin-bottom: 10px;"></header>

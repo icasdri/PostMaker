@@ -3,10 +3,12 @@ var connect = require('gulp-connect');
 var gulpif = require('gulp-if');
 var merge2 = require('merge2');
 var inject = require('gulp-inject');
+var removeCode = require('gulp-remove-code');
 var concat = require('gulp-concat');
 var riot = require('gulp-riot');
 var mainBowerFiles = require('main-bower-files');
 var uglify = require('gulp-uglify');
+var htmlmin = require('gulp-htmlmin');
 var surge = require('gulp-surge');
 
 var args = require('minimist')(process.argv.slice(2));
@@ -29,6 +31,8 @@ gulp.task('build', function() {
   gulp.src('index.html')
     .pipe(inject(js_files, {relative: true, ignorePath: TARGET}))
     .pipe(inject(libs, {name: 'libs', relative: true, ignorePath: TARGET}))
+    .pipe(removeCode({ _keep_in_prod: !PROD, _keep_in_dev: PROD}))
+    .pipe(gulpif(PROD, htmlmin({removeComments: true, collapseWhitespace: true})))
     .pipe(gulp.dest(TARGET));
 
   if (PROD) {
