@@ -44,10 +44,11 @@
     if (opts.pub && conf.publisherId == opts.pub.publisherId) {
       var dat = Publishing.getDat(conf.publisherId);
       var jso = null;
+      var potentiallyWaiting = true;
       if (Publishing.cbjso) {
         jso = Publishing.cbjso;
         Publishing.cbjso = null;
-        Publishing.commit();
+        potentiallyWaiting = false;
       } else {
         dat.jsoConfig = {
           providerID: "google",
@@ -57,15 +58,27 @@
           scopes: { request: ["https://www.googleapis.com/auth/gmail.send"] }
         }
         jso = new JSO(dat.jsoConfig);
-        Publishing.waitingOnOauth = true;
-        Publishing.commit();
         jso.getToken();
       }
+
+      if (potentiallyWaiting) {
+        Publishing.waitingOnOauth = true;
+        Publishing.commit();
+      }
+      /*
+        OAuth stuff, something like jso.ajax() calls that get actual work done
+        The below is testing only.
+      */
       jso.getToken(function(token) {
           console.log("TOKEN!!!!! " + token);
           self.statusMessage = "Token: " + token;
           self.update();
       });
+      /* End OAuth stuff */
+      if (potentiallyWaiting) {
+        Publishing.waitingOnOauth = false;
+        Publishing.commit();
+      }
     }
   </script>
   <style scoped>
