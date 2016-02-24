@@ -1,4 +1,4 @@
-/* Copyright 2015 icasdri
+/* Copyright 2015-2016 icasdri
 
 This file is part of PostMaker.
 
@@ -174,6 +174,112 @@ var Store = {
   }
 };
 
+var Publishing = {
+  post: null,
+  stat: -2, // -2 for not publishing, -1 for primary, 0..(n-1) for the nth publisher (index in an array style)
+  primaryUrl: null, // the primaryUrl, either retrieved after posting to primaryLoc, or inputted as part of post
+  waitingOnOauth: false,
+  dat: {}, // map of publisherId to a state object holding jsoConfigs, etc.
+  cbjso: null,
+
+  init: function() {
+    var jsonData = sessionStorage.getItem("publishing");
+    if (jsonData) {
+      var data = JSON.parse(jsonData);
+      this.post = data.post;
+      this.stat = data.stat;
+      this.dat = data.dat;
+      this.primaryUrl = data.primaryUrl;
+      this.waitingOnOauth = data.waitingOnOauth;
+    } // otherwise, leave as is -- we've already initialized to initial state
+  },
+
+  commit: function() {
+    var jsonData = JSON.stringify({
+      post: this.post,
+      stat: this.stat,
+      dat: this.dat,
+      primaryUrl: this.primaryUrl,
+      waitingOnOauth: this.waitingOnOauth
+    });
+    sessionStorage.setItem("publishing", jsonData);
+  },
+
+  begin: function() {
+    this.post = Store.post;
+    Store.resetPost();
+    if (!this.post.existingPrimaryUrl) {
+      this.stat = -1;
+    } else {
+      this.primaryUrl = this.post.existingPrimaryUrl;
+      this.stat = 0;
+    }
+    this.commit();
+  },
+
+  next: function() {
+
+  },
+
+  cancel: function() {
+
+  },
+
+  getCurrentPubConf: function() {
+    if (this.stat == -1) {
+      if (this.post.primaryLoc) {
+        return this.post.primaryLoc;
+      } else {
+        console.log("[Publishing] WARN: attempted getting primary pubconf (stat: -1) for a post that has no primaryLoc!");
+      }
+    } else if (this.stat >= 0) {
+      if (this.stat < this.post.secondaryLocs.length) {
+        return this.post.secondaryLocs[this.stat];
+      } else {
+        console.log("[Publishing] WARN: attempted getting a secondary pubconf (stat: " + this.stat + ") outside the bounds of the post's secondaryLocs!");
+      }
+    } else {
+      console.log("[Publishing] WARN: attempted getting a pubconf while publishing is not active! (stat: " + this.stat + ")");
+    }
+    return null;
+  },
+
+  getDat: function(publisherId) {
+    var x = this.dat[publisherId];
+    if (x == undefined) {
+      var n = {};
+      this.dat[publisherId] = n;
+      return n;
+    } else {
+      return x;
+    }
+  },
+
+  processRoute: function(onPublishRoute) {
+    // returns whether I "processed" a publishing route (allowing callers to know if they need to continue with their routing -- that is if I didn't "process" it)
+    if (this.waitingOnOauth) {
+      var pub = this.getCurrentPubConf();
+      var pubdat = this.getDat(pub.publisherId);
+      var jsoConfig = pubdat.jsoConfig;
+      if (jsoConfig) {
+        var jso = new JSO(jsoConfig);
+        jso.callback();
+        this.cbjso = jso;
+      } else {
+        console.log("[Publishing] WARN: supposedly wating on OAuth, but there's no jsoConfig available for this publisherId!");
+      }
+      this.waitingOnOauth = false;
+    }
+
+    if (this.stat >= -1 && !onPublishRoute) {
+      riot.route("publish");
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+
 riot.observable(App);
 window.onbeforeunload = function() {
   App.trigger("unload");
@@ -182,23 +288,41 @@ window.onbeforeunload = function() {
 riot.observable(Store);
 Store.init();
 
+riot.observable(Publishing);
+Publishing.init();
+
 riot.mount("pm-appbar");
 
+JSO.enablejQuery($);
+
 riot.route("/", function() {
-  console.log("Redirecting to /create");
-  riot.route("/create");
+  if (!Publishing.processRoute(false)) {
+    console.log("Redirecting to /create");
+    riot.route("/create");
+  }
 });
 
 riot.route("/create", function() {
-  riot.mount("pm-view", "post-creator");
+  if (!Publishing.processRoute(false)) {
+    riot.mount("pm-view", "post-creator");
+  }
 });
 
 riot.route("/configure", function() {
-  riot.mount("pm-view", "configuration-manager");
+  if (!Publishing.processRoute(false)) {
+    riot.mount("pm-view", "configuration-manager");
+  }
 });
 
 riot.route("/publish", function() {
+  Publishing.processRoute(true)
   riot.mount("pm-view", "post-publisher");
 });
+
+riot.route("*", function() {
+  if (!Publishing.processRoute(false)) {
+    riot.route("/");
+  }
+})
 
 riot.route.start(true);
