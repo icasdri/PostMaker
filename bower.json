@@ -6,7 +6,9 @@
   "private": false,
   "dependencies": {
     "riot": "~2.3.1",
-    "mui": "~0.2.1"
+    "mui": "~0.2.1",
+    "jso": "^2.0.3",
+    "zepto": "^1.1.6"
   },
   "overrides": {
     "riot": {
@@ -18,6 +20,16 @@
       "main": [
         "dist/css/mui.min.css",
         "dist/js/mui.min.js"
+      ]
+    },
+    "jso": {
+      "main": [
+        "build/jso.js"
+      ]
+    },
+    "zepto": {
+      "main": [
+        "zepto.min.js"
       ]
     }
   }
