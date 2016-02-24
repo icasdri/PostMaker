@@ -1,6 +1,6 @@
 <post-creator>
   <!--
-  Copyright 2015 icasdri
+  Copyright 2015-2016 icasdri
 
   This file is part of PostMaker.
 
@@ -98,8 +98,7 @@
       }
     });
 
-    self.on("unmount", function() {
-      console.log("post-creator is getting unmounted.");
+    self.savePost = function() {
       Store.post.title = self["title-entry"].value;
       Store.post.blurb = self["blurb-input"].value;
       self.recalculatePrimaryLocInPost();
@@ -107,6 +106,11 @@
         Store.post.fullText = self.tags["pm-collapsible"]["primary-main-body-input"].value;
       }
       Store.commitChangesInPost();
+    }
+
+    self.on("unmount", function() {
+      console.log("post-creator is getting unmounted.");
+      self.savePost();
     });
     App.on("unload", function() {
       self.trigger("unmount");
@@ -158,6 +162,22 @@
 
     self.publishButtonClicked = function() {
       console.log("Publish Button Clicked!");
+      self.savePost();
+      if (Store.post.existingPrimaryUrl != null) {
+        if (Store.post.existingPrimaryUrl == "") {
+          alert("Your existing primary url is empty!")
+          return;
+        } else if (Store.post.secondaryLocs.length == 0) {
+          alert("Please add at least one secondary publisher by using the drop-down to select and then clicking the (+) button. Configure a publisher in 'Configure' if needed.");
+          return;
+        }
+      } else {
+        if (!Store.post.primaryLoc) {
+          alert("Please select a primary publisher. Configure a publisher in 'Configure' (remember to check the P for allowing as primary) if needed.");
+          return;
+        }
+      }
+      Publishing.begin();
       riot.route("publish");
     }
   </script>
