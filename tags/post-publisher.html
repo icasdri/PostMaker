@@ -1,6 +1,6 @@
 <post-publisher>
   <!--
-  Copyright 2015 icasdri
+  Copyright 2015-2016 icasdri
 
   This file is part of PostMaker.
 
@@ -18,11 +18,10 @@
   along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
   -->
   <div class="mui-container">
-    <h2>Publishing《{ Store.post.title }》...</h2>
-    <p><em>Please do not navigate away from this page until publishing is complete!</em></p>
-    <!-- TODO: These references will need to change to reference Store.publishing.post eventually -->
-    <publisher-wrapper if={ Store.post.existingPrimaryUrl } pub={ Store.post.primaryLoc } pubtype="primary"></publisher-wrapper>
-    <publisher-wrapper each={ v in Store.post.secondaryLocs } pub={ v } pubtype="secondary"></publisher-wrapper>
+    <h2>Publishing《{ Publishing.post.title }》...</h2>
+    <p><em>Please stay on this page (unless redirected for auth, etc.) until publishing is complete!</em></p>
+    <publisher-wrapper if={ !Publishing.post.existingPrimaryUrl } pub={ Publishing.post.primaryLoc } pubtype="primary"></publisher-wrapper>
+    <publisher-wrapper each={ v in Publishing.post.secondaryLocs } pub={ v } pubtype="secondary"></publisher-wrapper>
   </div>
 </post-publisher>
 
@@ -34,10 +33,38 @@
     <p>{ statusMessage }</p>
   </div>
   <script>
+    console.log("Made it to publisher-wrapper!");
     var self = this;
     self.progressValue = 33;
     self.barcolor = App.COLORS.PRIMARY;
     self.statusMessage = "Status message.";
+    self.update();
+    var conf = Publishing.getCurrentPubConf();
+    console.log("conf: " + conf);
+    if (opts.pub && conf.publisherId == opts.pub.publisherId) {
+      var dat = Publishing.getDat(conf.publisherId);
+      var jso = null;
+      if (Publishing.cbjso) {
+        jso = Publishing.cbjso;
+      } else {
+        dat.jsoConfig = {
+          providerID: "google",
+          client_id: "853943586263-f2ondnhfv7nbnk6m0ia64qr807of7i0k.apps.googleusercontent.com",
+          redirect_uri: "https://postmaker.surge.sh",
+          authorization: "https://accounts.google.com/o/oauth2/auth",
+          scopes: { request: ["https://www.googleapis.com/auth/gmail.send"] }
+        }
+        jso = new JSO(dat.jsoConfig);
+        Publishing.waitingOnOauth = true;
+        Publishing.commit();
+        jso.getToken();
+      }
+      jso.getToken(function(token) {
+          console.log("TOKEN!!!!! " + token);
+          self.statusMessage = "Token: " + token;
+          self.update();
+      });
+    }
   </script>
   <style scoped>
     .mui-panel h4, h5 {
