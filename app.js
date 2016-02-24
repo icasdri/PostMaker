@@ -269,6 +269,7 @@ var Publishing = {
         console.log("[Publishing] WARN: supposedly wating on OAuth, but there's no jsoConfig available for this publisherId!");
       }
       this.waitingOnOauth = false;
+      this.commit();
     }
 
     if (this.stat >= -1 && !onPublishRoute) {

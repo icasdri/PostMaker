@@ -46,6 +46,8 @@
       var jso = null;
       if (Publishing.cbjso) {
         jso = Publishing.cbjso;
+        Publishing.cbjso = null;
+        Publishing.commit();
       } else {
         dat.jsoConfig = {
           providerID: "google",
