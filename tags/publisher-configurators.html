@@ -59,3 +59,30 @@
     }
   </script>
 </pubconf-facebook-group>
+
+<pubconf-gmail>
+  <div class="mui-textfield">
+    <label>To (comma-separated list of emails)</label>
+    <input id="to-input" type="text" value={ opts.pub.toField }>
+  </div>
+  <div class="mui-textfield">
+    <label>CC (comma-separated list of emails)</label>
+    <input id="cc-input" type="text" value={ opts.pub.ccField }>
+  </div>
+  <div class="mui-textfield">
+    <label>BCC (comma-separated list of emails)</label>
+    <input id="bcc-input" type="text" value={ opts.pub.bccField }>
+  </div>
+  <script>
+    var self = this;
+    self.on("mount", function() {
+      console.log("pubconf-gmail is getting mounted");
+    });
+    self.saveViaMutate = function() {
+      console.log("pubconf-gmail's saveViaMutate() is getting called");
+      opts.pub.toField = self["to-input"].value;
+      opts.pub.ccField = self["cc-input"].value;
+      opts.pub.bccField = self["bcc-input"].value;
+    }
+  </script>
+</pubconf-gmail>

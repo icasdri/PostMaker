@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with PostMaker.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var Workers = {};
+
 var App = {
   COLORS: {
     PRIMARY: "#2196F3", // mui-color("blue")
@@ -37,6 +39,29 @@ var App = {
         groupId: "",
         apiKey: ""
       })
+    },
+    "gmail": {
+      typeName: "Gmail",
+      configTemplate: JSON.stringify({
+        toField: "",
+        ccField: "",
+        bccField: ""
+      })
+    }
+  },
+
+  getPubconfTagNameFor: function(name) {
+    console.log("responding with pubconf tagname for: " + name);
+    return "pubconf-" + name;
+  },
+
+  getWorkerFor: function(name) {
+    var worker = Workers[name];
+    if (worker) {
+      return worker;
+    } else {
+      console.error("worker for publisher type/name " + name + " does not exist!");
+      return null;
     }
   }
 }

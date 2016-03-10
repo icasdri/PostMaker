@@ -93,7 +93,7 @@
     var self = this;
     var pubconfTag = null;
     var internal = this.tags["pm-collapsible"];
-    var pubconfTagName = "pubconf-" + opts.pub.publisherType
+    var pubconfTagName = App.getPubconfTagNameFor(opts.pub.publisherType);
     self.isExpanded = false;
     self.headerClicked = function() {
       self.isExpanded = !self.isExpanded;
