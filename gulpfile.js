@@ -23,8 +23,10 @@ gulp.task('build', function() {
     .pipe(riot())
 
   var app = gulp.src('app.js')
+  var workers = gulp.src('workers/*.js')
+  var route = gulp.src('route.js');
 
-  var js_files = merge2(tags, app)
+  var js_files = merge2(tags, app, workers, route)
     .pipe(gulpif(PROD, uglify()))
     .pipe(gulpif(PROD, concat('all.js')))
 
@@ -40,6 +42,8 @@ gulp.task('build', function() {
   } else {
     app.pipe(gulp.dest(TARGET));
     tags.pipe(gulp.dest(TARGET + 'tags'));
+    workers.pipe(gulp.dest(TARGET + 'workers'));
+    route.pipe(gulp.dest(TARGET));
   }
 });
 
