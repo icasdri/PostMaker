@@ -240,14 +240,15 @@ var Publishing = {
       this.stat = 0;
     }
     this.commit();
+    this.trigger("stat");
   },
 
   next: function() {
-
+    this.trigger("stat");
   },
 
   cancel: function() {
-
+    this.trigger("stat");
   },
 
   getCurrentPubConf: function() {

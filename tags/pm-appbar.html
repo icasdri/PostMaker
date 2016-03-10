@@ -19,16 +19,59 @@
   -->
   <div class="mui-container-fluid">
     <span class="mui--text-title">PostMaker</span>
-    <a href="#create">Create</a>
-    <a href="#configure">Configure</a>
+    <span class={ link-container: true, disabled: Publishing.stat >= -1 }>
+      <a href="#create">Create</a>
+      <span class="pub-tooltip">Cancel publishing to navigate away</span>
+    </span>
+    <span class={ link-container: true, disabled: Publishing.stat >= -1 }>
+      <a href="#configure">Configure</a>
+      <span class="pub-tooltip">Cancel publishing to navigate away</span>
+    </span>
   </div>
+  <script>
+    var self = this;
+    Publishing.on("stat", function() {
+      self.update();
+    });
+  </script>
   <style scoped>
     .mui--text-title {
       margin-right: 2px;
     }
-    a {
+    .link-container a {
       color: #FFF;
+    }
+    .disabled a {
+      color: #BBC;
+      pointer-events: none;
+    }
+
+    .link-container {
+      position: relative;
       margin-left: 15px;
+    }
+    .disabled:hover .pub-tooltip {
+      visibility: visible;
+    }
+
+    .link-container .pub-tooltip {
+      visibility: hidden;
+      overflow: hidden;
+      background-color: #444;
+      color: #fff;
+      border-radius: 6px;
+      text-align: center;
+      line-height: 200%;
+      width: 250px;
+      top: 120%;
+      left: 50%;
+      margin-left: -120px;
+      padding-top: -20px;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .pub-tooltip {
     }
   </style>
 </pm-appbar>
