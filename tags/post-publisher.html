@@ -68,7 +68,6 @@
           worker.prep(primaryUrlThingy, dat, Publishing.post.title, contentP);
           if (dat.jsoConfig) {
             jso = new JSO(dat.jsoConfig);
-            jso.getToken();
           } else {
             // this publisher doesn't need jso (since they didn't give us a config)
             potentiallyWaiting = false;
@@ -105,6 +104,11 @@
           The below is testing only.
         */
 
+        jso.getToken(function(token) {
+         console.log("TOKEN!!!!! " + token);
+         progress("Token: " + token);
+         self.update();
+        });
         worker.go(primaryUrlThingy, dat, jso, progress);
 
         /* End OAuth stuff */
