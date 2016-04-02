@@ -244,10 +244,18 @@ var Publishing = {
   },
 
   next: function() {
+    this.stat += 1;
+    var currentPubconf = this.getCurrentPubConf();
+    if (!currentPubconf) {
+      this.stat = -2;
+    }
+    this.commit();
     this.trigger("stat");
   },
 
   cancel: function() {
+    this.stat = -2;
+    this.commit();
     this.trigger("stat");
   },
 
