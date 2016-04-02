@@ -40,86 +40,86 @@
     self.statusMessage = "Initializing...";
     self.update();
 
-    var conf = Publishing.getCurrentPubConf();
+    self.on("mount", function() {
+      var conf = Publishing.getCurrentPubConf();
 
-    if (opts.pub && conf.publisherId == opts.pub.publisherId) {
-      var worker = App.getWorkerFor(conf.publisherType);
-      var dat = Publishing.getDat(conf.publisherId);
-      var primaryUrlThingy = null;
-      var contentP = null;
-      if (Publishing.stat == -1) {
-        primaryUrlThingy = function(newUrl) {
-          Publishing.primaryUrl = newUrl;
-        };
-        contentP = Publishing.post.fullText;
-      } else if (Publishing.primaryUrl) {
-        primaryUrlThingy = Publishing.primaryUrl;
-        contentP = Publishing.post.blurb.replace("%%%", primaryUrlThingy);
-      }
+      if (opts.pub && conf.publisherId == opts.pub.publisherId) {
+        var worker = App.getWorkerFor(conf.publisherType);
+        var dat = Publishing.getDat(conf.publisherId);
+        var primaryUrlThingy = null;
+        var contentP = null;
+        if (Publishing.stat == -1) {
+          primaryUrlThingy = function(newUrl) {
+            Publishing.primaryUrl = newUrl;
+          };
+          contentP = Publishing.post.fullText;
+        } else if (Publishing.primaryUrl) {
+          primaryUrlThingy = Publishing.primaryUrl;
+          contentP = Publishing.post.blurb.replace("%%%", primaryUrlThingy);
+        }
 
-      if (primaryUrlThingy) {
-        var jso = null;
-        var potentiallyWaiting = true;
-        if (Publishing.cbjso) {
-          jso = Publishing.cbjso;
-          Publishing.cbjso = null;
-          potentiallyWaiting = false;
-        } else {
-          worker.prep(primaryUrlThingy, dat, Publishing.post.title, contentP);
-          if (dat.jsoConfig) {
-            jso = new JSO(dat.jsoConfig);
-          } else {
-            // this publisher doesn't need jso (since they didn't give us a config)
+        if (primaryUrlThingy) {
+          var jso = null;
+          var potentiallyWaiting = true;
+          if (Publishing.cbjso) {
+            jso = Publishing.cbjso;
+            Publishing.cbjso = null;
             potentiallyWaiting = false;
-          }
-        }
-
-        if (potentiallyWaiting) {
-          Publishing.waitingOnOauth = true;
-          Publishing.commit();
-        }
-
-        var progress = function(p) {
-          if (typeof(p) == "number") {
-            if (0 <= p && p <= 100) {
-              self.progressValue = p;
-            } else {
-              console.warn("WARN: progress value not in range 0 to 100! got " + p);
-            }
-          } else if (typeof(p) == "object") {
-            if (p.color) {
-              self.barcolor = p.color;
-            } else {
-              console.warn("WARN: progress value was an object but not color field defined!");
-            }
-          } else if (typeof(p) == "string") {
-            self.statusMessage = p;
           } else {
-            console.warn("WARN: unhandleable type passed to progress() function");
+            worker.prep(primaryUrlThingy, conf, dat, Publishing.post.title, contentP);
+            if (dat.jsoConfig) {
+              jso = new JSO(dat.jsoConfig);
+            } else {
+              // this publisher doesn't need jso (since they didn't give us a config)
+              potentiallyWaiting = false;
+            }
           }
+
+          if (potentiallyWaiting) {
+            Publishing.waitingOnOauth = true;
+            Publishing.commit();
+          }
+
+          var progress = function(p) {
+            if (typeof(p) == "number") {
+              if (0 <= p && p <= 100) {
+                self.progressValue = p;
+                self.update();
+              } else {
+                console.warn("WARN: progress value not in range 0 to 100! got " + p);
+              }
+            } else if (typeof(p) == "object") {
+              if (p.color) {
+                self.barcolor = p.color;
+                self.update();
+              } else {
+                console.warn("WARN: progress value was an object but not color field defined!");
+              }
+            } else if (typeof(p) == "string") {
+              self.statusMessage = p;
+              self.update();
+            } else {
+              console.warn("WARN: unhandleable type passed to progress() function");
+            }
+          }
+
+          /*
+            OAuth stuff, something like jso.ajax() calls that get actual work done
+            The below is testing only.
+          */
+
+          worker.go(primaryUrlThingy, dat, jso, progress);
+
+          /* End OAuth stuff */
+          if (potentiallyWaiting) {
+            Publishing.waitingOnOauth = false;
+            Publishing.commit();
+          }
+        } else {
+          console.error("Primary URL not there when trying to publish secondary locs!");
         }
-
-        /*
-          OAuth stuff, something like jso.ajax() calls that get actual work done
-          The below is testing only.
-        */
-
-        jso.getToken(function(token) {
-         console.log("TOKEN!!!!! " + token);
-         progress("Token: " + token);
-         self.update();
-        });
-        worker.go(primaryUrlThingy, dat, jso, progress);
-
-        /* End OAuth stuff */
-        if (potentiallyWaiting) {
-          Publishing.waitingOnOauth = false;
-          Publishing.commit();
-        }
-      } else {
-        console.error("Primary URL not there when trying to publish secondary locs!");
       }
-    }
+    });
   </script>
   <style scoped>
     .mui-panel h4, h5 {
