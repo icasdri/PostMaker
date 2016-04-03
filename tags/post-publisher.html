@@ -109,12 +109,6 @@
           */
 
           worker.go(primaryUrlThingy, dat, jso, progress);
-
-          /* End OAuth stuff */
-          if (potentiallyWaiting) {
-            Publishing.waitingOnOauth = false;
-            Publishing.commit();
-          }
         } else {
           console.error("Primary URL not there when trying to publish secondary locs!");
         }
